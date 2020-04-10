@@ -1,0 +1,47 @@
+using System;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using {{domain.Namespace}}.Entities.Interfaces;
+using {{domain.Namespace}}.Shared;
+
+namespace {{domain.Namespace}}.Entities
+{
+    public class {{entity.Name}}Entity : 
+        Entity,
+        I{{entity.Name}}Entity{{#each entity.Interfaces}}{{#unless IsMixinOnly}},
+        {{InterfaceName}}{{/unless}}{{/each}}
+    {
+        {{#each entity.Properties}}
+        public static readonly string {{Name}}Property = "{{Name}}";
+
+        public virtual {{getType .}} {{Name}}
+        {
+            get => Get<{{getType .}}>({{Name}}Property);
+            set => Set<{{getType .}}>({{Name}}Property, value);
+        }
+
+        {{/each}}
+        public static readonly string VersionProperty = "Version";
+
+        public virtual long Version
+        {
+            get => Get<long>(VersionProperty);
+            set => Set<long>(VersionProperty, value);
+        }
+
+        public I{{entity.Name}}Entity CopyFrom(I{{entity.Name}}Entity @from)
+        {
+            {{#each entity.Properties}}
+            {{Name}} = @from.{{Name}};
+            {{/each}}
+            Version = @from.Version;
+            return this;
+        }
+
+        public void CopyTo(I{{entity.Name}}Entity @to)
+        {
+            @to.CopyFrom(this);
+        }
+    }
+}

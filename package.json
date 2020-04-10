@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/dustylau/lb.generator.handlebars.templates.cqrs.es/issues"
   },
-  "homepage": "https://github.com/dustylau/lb.generator.handlebars.templates.cqrs.es#readme"
+  "homepage": "https://github.com/dustylau/lb.generator.handlebars.templates.cqrs.es#readme",
+  "dependencies": {
+    "lb.generator.handlebars": "^1.1.4"
+  }
 }

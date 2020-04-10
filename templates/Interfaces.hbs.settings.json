@@ -1,0 +1,8 @@
+{
+    "Target": "Domain",
+    "ExportPath": "{domainModel.ProjectRoot}\\{domainModel.Namespace}\\Interfaces\\{FileName}",
+    "AppendToExisting": false,
+    "FileNamePattern": "//\\[(?<FileName>[^\\[]+)\\]",
+    "RemoveFileName": true,
+    "SplitOn": "//##SPLIT##"
+}

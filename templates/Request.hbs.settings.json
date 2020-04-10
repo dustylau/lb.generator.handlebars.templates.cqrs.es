@@ -1,0 +1,5 @@
+{
+    "Target": "DomainEntities",
+    "ExportPath": "{domainModel.ProjectRoot}\\{domainModel.Namespace}\\Requests\\{entity.Name}Requests.cs",
+    "AppendToExisting": false
+}

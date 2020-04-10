@@ -1,0 +1,156 @@
+using System;
+using System.Threading.Tasks;
+using CommonServiceLocator;
+using {{domain.CoreESNamespace}};
+using {{domain.CoreESNamespace}}.Interfaces;
+using {{domain.CoreNamespace}}.Logging;
+using MassTransit;
+using Microsoft.Extensions.Logging;
+using {{domain.Namespace}}.Aggregates;
+using {{domain.Namespace}}.Shared;
+
+namespace {{domain.Namespace}}.Commands
+{
+    {{#each entity.Actions}}
+    public partial class {{Command}} : Command{{#unless UseConstructor}}, IHasOriginalVersion{{/unless}}
+    {
+        {{#each Properties}}
+        public {{getType .}} {{Name}} { get; private set; }
+        {{/each}}
+        {{#unless UseConstructor}}
+        public long OriginalVersion { get; private set; }
+        {{/unless}}
+
+        public {{Command}}({{#each (where Properties 'IsRequestParameter eq true')}}{{#unless @first}},{{/unless}}
+            {{getType .}} {{camelCase Name}}{{/each}}{{#unless UseConstructor}},
+            long originalVersion{{/unless}}
+        )
+        {
+            {{#each Properties}}
+            {{#if IsRequestParameter}}
+            {{Name}} = {{camelCase Name}};
+            {{else}}
+            {{#if DefaultExpression}}
+            {{Name}} = {{DefaultExpression}};
+            {{/if}}
+            {{/if}}
+            {{/each}}
+            {{#unless UseConstructor}}
+            OriginalVersion = originalVersion;
+            {{/unless}}
+        }
+    }
+
+    {{/each}}
+    {{#if entity.Snapshottable}}
+    public partial class Snapshot{{entity.Name}} : Command, IHasOriginalVersion
+    {
+        public Guid Id { get; private set; }
+        public long OriginalVersion { get; private set; }
+
+        public Snapshot{{entity.Name}}(
+            Guid id,
+            long originalVersion
+        )
+        {
+            Id = id;
+            OriginalVersion = originalVersion;
+        }
+    }
+    {{/if}}
+
+    public partial class {{entity.Name}}CommandHandlers : {{#each entity.Actions}}{{#unless @first}},{{/unless}}
+        IConsumer<{{Command}}>{{/each}}{{#if entity.Snapshottable}},
+        IConsumer<Snapshot{{entity.Name}}>{{/if}}
+    {
+        private readonly IRepository _repository;
+        private readonly ILogger _log;
+
+        public {{entity.Name}}CommandHandlers()
+        {
+            _repository = ServiceLocator.Current.GetInstance<IRepository>();
+            _log = ServiceLocator.Current.GetInstance<ILogger>();
+        }
+        
+        private void CheckVersion(Aggregate aggregate, IHasOriginalVersion message, string type = "{{entity.Name}}")
+        {
+            if (aggregate.Version != message.OriginalVersion)
+                throw new Exception(
+                    $"{type} Version: [{aggregate.Version}] does not match Expected Version: {message.OriginalVersion}");
+        }
+        {{#each entity.Actions}}
+
+        public async Task Consume(ConsumeContext<{{Command}}> context)
+        {
+            var tag = string.Empty;
+
+            try
+            {
+                var message = context.Message;
+
+                tag = $"Consuming {{../entity.Name}} {{Command}}: {message.Id}";
+
+                _log.Debug(tag);
+
+                {{#if UseConstructor}}
+                var {{camelCase ../entity.Name}} = new {{../entity.Name}}({{#each Properties}}{{#unless @first}},{{/unless}}
+                    message.{{Name}}{{/each}}
+                );
+                {{else}}
+                var {{camelCase ../entity.Name}} = await _repository.GetById<{{../entity.Name}}>(message.Id);
+
+                CheckVersion({{camelCase ../entity.Name}}, message);
+
+                {{camelCase ../entity.Name}}.{{Name}}({{#each Properties}}{{#unless @first}},{{/unless}}
+                    message.{{Name}}{{/each}}
+                );
+                {{/if}}
+
+                _log.Debug($"{tag} - Saving");
+                {{#if UseConstructor}}
+                await _repository.Save({{camelCase ../entity.Name}}, -1);
+                {{else}}
+                await _repository.Save({{camelCase ../entity.Name}});
+                {{/if}}
+                _log.Debug($"{tag} - Saved");
+            }
+            catch (Exception exception)
+            {
+                _log.Warn($"{tag} - Error: {exception.Message}");
+                throw;
+            }
+        }
+        {{/each}}
+        {{#if entity.Snapshottable}}
+
+        public async Task Consume(ConsumeContext<Snapshot{{entity.Name}}> context)
+        {
+            var tag = string.Empty;
+
+            try
+            {
+                var message = context.Message;
+
+                tag = $"Consuming {{entity.Name}} Snapshot{{entity.Name}}: {message.Id}";
+
+                _log.Debug(tag);
+
+                var {{camelCase entity.Name}} = await _repository.GetById<{{entity.Name}}>(message.Id);
+
+                CheckVersion({{camelCase entity.Name}}, message);
+
+                {{camelCase entity.Name}}.Snapshot();
+
+                _log.Debug($"{tag} - Saving");
+                await _repository.Save({{camelCase entity.Name}});
+                _log.Debug($"{tag} - Saved");
+            }
+            catch (Exception exception)
+            {
+                _log.Warn($"{tag} - Error: {exception.Message}");
+                throw;
+            }
+        }
+        {{/if}}
+    }
+}

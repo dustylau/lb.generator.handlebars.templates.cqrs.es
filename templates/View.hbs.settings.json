@@ -1,0 +1,5 @@
+{
+    "Target": "DomainEntities",
+    "ExportPath": "{domainModel.ProjectRoot}\\{domainModel.Namespace}\\Views\\{entity.Name}Views.cs",
+    "AppendToExisting": false
+}
