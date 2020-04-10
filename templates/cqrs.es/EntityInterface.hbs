@@ -1,0 +1,12 @@
+using System;
+using {{domain.Namespace}}.Shared;
+
+namespace {{domain.Namespace}}.Entities.Interfaces
+{
+    public interface I{{entity.Name}}Entity : IEntity<I{{entity.Name}}Entity>
+    {
+        {{#each entity.Properties}}
+        {{getType .}} {{Name}} { get; set; }
+        {{/each}}
+    }
+}

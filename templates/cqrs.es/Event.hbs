@@ -1,0 +1,25 @@
+using System;
+using {{domain.CoreESNamespace}};
+using {{domain.Namespace}}.Shared;
+
+namespace {{domain.Namespace}}.Events
+{
+    {{#each entity.Actions}}
+    public partial class {{Event}} : Event
+    {
+        {{#each Properties}}
+        public {{getType .}} {{Name}} { get; private set; }
+        {{/each}}
+
+        public {{Event}}({{#each Properties}}{{#unless @first}},{{/unless}}
+            {{getType .}} {{camelCase Name}}{{/each}}
+        )
+        {
+            {{#each Properties}}
+            {{Name}} = {{camelCase Name}};
+            {{/each}}
+        }
+    }
+
+    {{/each}}
+}

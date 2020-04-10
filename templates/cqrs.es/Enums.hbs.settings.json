@@ -1,0 +1,8 @@
+{
+    "Target": "Domain",
+    "ExportPath": "{{domainModel.ProjectRoot}}\\\\{{domainModel.Namespace}}\\Shared\\\\{{FileName}}",
+    "AppendToExisting": false,
+    "FileNamePattern": "//\\[(?<FileName>\\w+\\.cs)\\]",
+    "RemoveFileName": true,
+    "SplitOn": "//##SPLIT##"
+}
