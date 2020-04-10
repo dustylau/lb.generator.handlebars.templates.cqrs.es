@@ -1,0 +1,26 @@
+{
+  "name": "lb.generator.handlebars.templates.cqrs.es",
+  "version": "1.0.0",
+  "description": "Letter B - Generator - Templates for CQRS / ES",
+  "main": "generate-cqrs-es.js",
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dustylau/lb.generator.handlebars.templates.cqrs.es.git"
+  },
+  "keywords": [
+    "letterb",
+    "generator",
+    "handlebars",
+    "cqrs",
+    "es"
+  ],
+  "author": "Dusty Lau (Letter B)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dustylau/lb.generator.handlebars.templates.cqrs.es/issues"
+  },
+  "homepage": "https://github.com/dustylau/lb.generator.handlebars.templates.cqrs.es#readme"
+}
