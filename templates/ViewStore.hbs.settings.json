@@ -1,5 +1,0 @@
-{
-    "Target": "Domain",
-    "ExportPath": "{domainModel.ProjectRoot}\\{domainModel.Namespace}\\Views\\ViewStore.cs",
-    "AppendToExisting": false
-}
