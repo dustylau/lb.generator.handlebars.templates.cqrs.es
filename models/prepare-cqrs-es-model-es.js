@@ -1,3 +1,5 @@
+const Generator = require("lb.generator.handlebars"); 
+
 const isEmpty = function(value) {
     return (value === undefined || value === null);
 };
@@ -100,7 +102,7 @@ const prepare = function(model) {
             }
 
             view.dtoName = `${view.Name}Dto`
-            view.dtoInstance = `${helpers.camelCase(view.dtoName)}`;
+            view.dtoInstance = `${Generator.Helpers.camelCase(view.dtoName)}`;
 
             for (const event of view.Events) {
                 event.relatedAction = entity.getActionByEvent(event.Name);
