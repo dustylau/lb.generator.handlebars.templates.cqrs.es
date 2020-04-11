@@ -64,7 +64,7 @@ const implementInterfaces = function(hasInterfaces, addPropertyCallback) {
     }
 };
 
-const prepareModel = function(model) {
+const prepare = function(model) {
     for (const interface of model.Interfaces) {
         implementInterfaces(interface);
     }
@@ -131,4 +131,4 @@ const prepareModel = function(model) {
     }
 };
 
-exports.prepareModel = prepareModel;
+exports.prepare = prepare;
