@@ -1,5 +1,5 @@
 {
     "Target": "DomainEntities",
-    "ExportPath": "{{domainModel.ProjectRoot}}\\\\{{domainModel.Namespace}}\\Aggregates\\\\{{entity.Name}}.cs",
+    "ExportPath": "{{domain.ProjectRoot}}\\\\{{domain.Namespace}}\\Aggregates\\\\{{entity.Name}}.cs",
     "AppendToExisting": false
 }

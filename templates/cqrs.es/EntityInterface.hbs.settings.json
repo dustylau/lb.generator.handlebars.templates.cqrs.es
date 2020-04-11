@@ -1,5 +1,5 @@
 {
     "Target": "DomainEntities",
-    "ExportPath": "{{domainModel.ProjectRoot}}\\\\{{domainModel.Namespace}}\\Entities\\Interfaces\\I{entity.Name}.cs",
+    "ExportPath": "{{domain.ProjectRoot}}\\\\{{domain.Namespace}}\\Entities\\Interfaces\\I{entity.Name}.cs",
     "AppendToExisting": false
 }
