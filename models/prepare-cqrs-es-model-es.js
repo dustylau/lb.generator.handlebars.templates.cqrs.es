@@ -6,7 +6,7 @@ const mergeValue = function(value, defaultValue) {
     return isEmpty(value) ? defaultValue : value;
 };
 
-const implementInterfaces = function(hasInterfaces, addPropertyCallback) {
+const implementInterfaces = function(model, hasInterfaces, addPropertyCallback) {
     for (const implentedInterface of hasInterfaces.Interfaces) {
 
         var interface = model.Interfaces.find(i => i.Name == implentedInterface.InterfaceName);
@@ -66,22 +66,22 @@ const implementInterfaces = function(hasInterfaces, addPropertyCallback) {
 
 const prepare = function(model) {
     for (const interface of model.Interfaces) {
-        implementInterfaces(interface);
+        implementInterfaces(model, interface);
     }
 
     for (const entity of model.DomainEntities) {
         
-        implementInterfaces(entity);
+        implementInterfaces(model, entity);
 
         for (const action of entity.Actions) {
-            implementInterfaces(action, function(interfaceProperty) {
+            implementInterfaces(model, action, function(interfaceProperty) {
                 interfaceProperty.IsRequestParameter = true;
                 interfaceProperty.IsIncludedInResponse = false;
             });
         }
 
         for (const view of entity.Views) {
-            implementInterfaces(view);
+            implementInterfaces(model, view);
         }
 
         entity.idProperty = entity.Properties.find(property => property.IsId);
