@@ -1,0 +1,671 @@
+{
+    "ProjectRoot": ".\\Generated",
+    "CoreNamespace": "LB.Core",
+    "CoreESNamespace": "LB.Core.ES",
+    "Namespace": "LB.Sample.Domain",
+    "DomainEntities": [
+      {
+        "Name": "Item",
+        "Description": null,
+        "Snapshottable": true,
+        "Properties": [
+          {
+            "Name": "CreateDate",
+            "Description": null,
+            "Type": "DateTime",
+            "BaseType": "DateTime",
+            "IsId": null,
+            "IsNullable": false,
+            "IsGenerated": null,
+            "Length": null,
+            "Precision": null,
+            "Scale": null,
+            "DefaultExpression": "DateTime.Now",
+            "IsEnum": null,
+            "Enum": null,
+            "Id": "03b00000-ce95-00ac-8618-08d7ddb97d3b"
+          },
+          {
+            "Name": "Name",
+            "Description": null,
+            "Type": "string",
+            "BaseType": "string",
+            "IsId": null,
+            "IsNullable": false,
+            "IsGenerated": null,
+            "Length": null,
+            "Precision": null,
+            "Scale": null,
+            "DefaultExpression": null,
+            "IsEnum": null,
+            "Enum": null,
+            "Id": "03b00000-ce95-00ac-076f-08d7ddb97d3c"
+          },
+          {
+            "Name": "Description",
+            "Description": null,
+            "Type": "string",
+            "BaseType": "string",
+            "IsId": null,
+            "IsNullable": false,
+            "IsGenerated": null,
+            "Length": null,
+            "Precision": null,
+            "Scale": null,
+            "DefaultExpression": null,
+            "IsEnum": null,
+            "Enum": null,
+            "Id": "03b00000-ce95-00ac-084d-08d7ddb97d3c"
+          },
+          {
+            "Name": "Active",
+            "Description": null,
+            "Type": "bool",
+            "BaseType": "bool",
+            "IsId": null,
+            "IsNullable": false,
+            "IsGenerated": null,
+            "Length": null,
+            "Precision": null,
+            "Scale": null,
+            "DefaultExpression": null,
+            "IsEnum": null,
+            "Enum": null,
+            "Id": "03b00000-ce95-00ac-08ac-08d7ddb97d3c"
+          }
+        ],
+        "Actions": [
+          {
+            "Name": "Create",
+            "Description": null,
+            "Command": "CreateItem",
+            "Event": "ItemCreated",
+            "Condition": null,
+            "Action": null,
+            "UseConstructor": true,
+            "Properties": [
+              {
+                "IsRequestParameter": false,
+                "IsIncludedInResponse": true,
+                "Name": "Id",
+                "Description": null,
+                "Type": "Guid",
+                "BaseType": "Guid",
+                "IsId": true,
+                "IsNullable": false,
+                "IsGenerated": null,
+                "Length": null,
+                "Precision": null,
+                "Scale": null,
+                "DefaultExpression": "NewId.NextGuid()",
+                "IsEnum": null,
+                "Enum": null,
+                "Id": "03b00000-ce95-00ac-0530-08d7ddb97d3e"
+              },
+              {
+                "IsRequestParameter": false,
+                "IsIncludedInResponse": false,
+                "Name": "CreateDate",
+                "Description": null,
+                "Type": "DateTime",
+                "BaseType": "DateTime",
+                "IsId": null,
+                "IsNullable": false,
+                "IsGenerated": null,
+                "Length": null,
+                "Precision": null,
+                "Scale": null,
+                "DefaultExpression": "DateTime.Now",
+                "IsEnum": null,
+                "Enum": null,
+                "Id": "03b00000-ce95-00ac-0660-08d7ddb97d3e"
+              },
+              {
+                "IsRequestParameter": true,
+                "IsIncludedInResponse": false,
+                "Name": "Name",
+                "Description": null,
+                "Type": "string",
+                "BaseType": "string",
+                "IsId": null,
+                "IsNullable": false,
+                "IsGenerated": null,
+                "Length": null,
+                "Precision": null,
+                "Scale": null,
+                "DefaultExpression": null,
+                "IsEnum": null,
+                "Enum": null,
+                "Id": "03b00000-ce95-00ac-0779-08d7ddb97d3e"
+              },
+              {
+                "IsRequestParameter": true,
+                "IsIncludedInResponse": false,
+                "Name": "Description",
+                "Description": null,
+                "Type": "string",
+                "BaseType": "string",
+                "IsId": null,
+                "IsNullable": false,
+                "IsGenerated": null,
+                "Length": null,
+                "Precision": null,
+                "Scale": null,
+                "DefaultExpression": null,
+                "IsEnum": null,
+                "Enum": null,
+                "Id": "03b00000-ce95-00ac-07ec-08d7ddb97d3e"
+              },
+              {
+                "IsRequestParameter": true,
+                "IsIncludedInResponse": false,
+                "Name": "Active",
+                "Description": null,
+                "Type": "bool",
+                "BaseType": "bool",
+                "IsId": null,
+                "IsNullable": false,
+                "IsGenerated": null,
+                "Length": null,
+                "Precision": null,
+                "Scale": null,
+                "DefaultExpression": null,
+                "IsEnum": null,
+                "Enum": null,
+                "Id": "03b00000-ce95-00ac-0849-08d7ddb97d3e"
+              }
+            ],
+            "Interfaces": [],
+            "Id": "03b00000-ce95-00ac-6c87-08d7ddb97d3e"
+          },
+          {
+            "Name": "Update",
+            "Description": null,
+            "Command": "UpdateItem",
+            "Event": "ItemUpdated",
+            "Condition": null,
+            "Action": null,
+            "UseConstructor": false,
+            "Properties": [
+              {
+                "IsRequestParameter": true,
+                "IsIncludedInResponse": false,
+                "Name": "Name",
+                "Description": null,
+                "Type": "string",
+                "BaseType": "string",
+                "IsId": null,
+                "IsNullable": false,
+                "IsGenerated": null,
+                "Length": null,
+                "Precision": null,
+                "Scale": null,
+                "DefaultExpression": null,
+                "IsEnum": null,
+                "Enum": null,
+                "Id": "03b00000-ce95-00ac-6e41-08d7ddb97d3e"
+              },
+              {
+                "IsRequestParameter": true,
+                "IsIncludedInResponse": false,
+                "Name": "Description",
+                "Description": null,
+                "Type": "string",
+                "BaseType": "string",
+                "IsId": null,
+                "IsNullable": false,
+                "IsGenerated": null,
+                "Length": null,
+                "Precision": null,
+                "Scale": null,
+                "DefaultExpression": null,
+                "IsEnum": null,
+                "Enum": null,
+                "Id": "03b00000-ce95-00ac-6ea3-08d7ddb97d3e"
+              },
+              {
+                "IsRequestParameter": true,
+                "IsIncludedInResponse": false,
+                "Name": "Active",
+                "Description": null,
+                "Type": "bool",
+                "BaseType": "bool",
+                "IsId": null,
+                "IsNullable": false,
+                "IsGenerated": null,
+                "Length": null,
+                "Precision": null,
+                "Scale": null,
+                "DefaultExpression": null,
+                "IsEnum": null,
+                "Enum": null,
+                "Id": "03b00000-ce95-00ac-6f01-08d7ddb97d3e"
+              }
+            ],
+            "Interfaces": [
+              {
+                "InterfaceName": "IHasId",
+                "IsMixinOnly": false,
+                "Id": "03b00000-ce95-00ac-8f30-08d7ddb97d3e"
+              }
+            ],
+            "Id": "03b00000-ce95-00ac-8f79-08d7ddb97d3e"
+          },
+          {
+            "Name": "Activate",
+            "Description": null,
+            "Command": "ActivateItem",
+            "Event": "ItemActivated",
+            "Condition": "!Active",
+            "Action": "Active = true;",
+            "UseConstructor": false,
+            "Properties": [],
+            "Interfaces": [
+              {
+                "InterfaceName": "IHasId",
+                "IsMixinOnly": false,
+                "Id": "03b00000-ce95-00ac-907f-08d7ddb97d3e"
+              }
+            ],
+            "Id": "03b00000-ce95-00ac-9090-08d7ddb97d3e"
+          },
+          {
+            "Name": "Deactivate",
+            "Description": null,
+            "Command": "DeactivateItem",
+            "Event": "ItemDeactivated",
+            "Condition": "Active",
+            "Action": "Active = false;",
+            "UseConstructor": false,
+            "Properties": [],
+            "Interfaces": [
+              {
+                "InterfaceName": "IHasId",
+                "IsMixinOnly": false,
+                "Id": "03b00000-ce95-00ac-90f5-08d7ddb97d3e"
+              }
+            ],
+            "Id": "03b00000-ce95-00ac-9104-08d7ddb97d3e"
+          }
+        ],
+        "Views": [
+          {
+            "Name": "ItemList",
+            "Description": null,
+            "ImplementsEntityInterface": true,
+            "Events": [
+              {
+                "Name": "ItemCreated",
+                "Description": null,
+                "Action": null,
+                "Condition": null,
+                "RemoveExistingViewOnUnmetCondition": false,
+                "InsertMissingView": false,
+                "UpdateVersion": true,
+                "DatabaseAction": "Save",
+                "Id": "03b00000-ce95-00ac-e5e0-08d7ddb97d3f"
+              },
+              {
+                "Name": "ItemUpdated",
+                "Description": null,
+                "Action": null,
+                "Condition": null,
+                "RemoveExistingViewOnUnmetCondition": false,
+                "InsertMissingView": false,
+                "UpdateVersion": true,
+                "DatabaseAction": "Save",
+                "Id": "03b00000-ce95-00ac-e701-08d7ddb97d3f"
+              },
+              {
+                "Name": "ItemActivated",
+                "Description": null,
+                "Action": "${dto}.Active = true;",
+                "Condition": null,
+                "RemoveExistingViewOnUnmetCondition": false,
+                "InsertMissingView": false,
+                "UpdateVersion": true,
+                "DatabaseAction": "Save",
+                "Id": "03b00000-ce95-00ac-e748-08d7ddb97d3f"
+              },
+              {
+                "Name": "ItemDeactivated",
+                "Description": null,
+                "Action": "${dto}.Active = false;",
+                "Condition": null,
+                "RemoveExistingViewOnUnmetCondition": false,
+                "InsertMissingView": false,
+                "UpdateVersion": true,
+                "DatabaseAction": "Save",
+                "Id": "03b00000-ce95-00ac-e783-08d7ddb97d3f"
+              }
+            ],
+            "Properties": [
+              {
+                "Name": "CreateDate",
+                "Description": null,
+                "Type": "DateTime",
+                "BaseType": "DateTime",
+                "IsId": null,
+                "IsNullable": false,
+                "IsGenerated": null,
+                "Length": null,
+                "Precision": null,
+                "Scale": null,
+                "DefaultExpression": null,
+                "IsEnum": null,
+                "Enum": null,
+                "Id": "03b00000-ce95-00ac-0e26-08d7ddb97d41"
+              },
+              {
+                "Name": "Name",
+                "Description": null,
+                "Type": "string",
+                "BaseType": "string",
+                "IsId": null,
+                "IsNullable": false,
+                "IsGenerated": null,
+                "Length": null,
+                "Precision": null,
+                "Scale": null,
+                "DefaultExpression": null,
+                "IsEnum": null,
+                "Enum": null,
+                "Id": "03b00000-ce95-00ac-0f76-08d7ddb97d41"
+              },
+              {
+                "Name": "Description",
+                "Description": null,
+                "Type": "string",
+                "BaseType": "string",
+                "IsId": null,
+                "IsNullable": false,
+                "IsGenerated": null,
+                "Length": null,
+                "Precision": null,
+                "Scale": null,
+                "DefaultExpression": null,
+                "IsEnum": null,
+                "Enum": null,
+                "Id": "03b00000-ce95-00ac-0fd6-08d7ddb97d41"
+              },
+              {
+                "Name": "Active",
+                "Description": null,
+                "Type": "bool",
+                "BaseType": "bool",
+                "IsId": null,
+                "IsNullable": false,
+                "IsGenerated": null,
+                "Length": null,
+                "Precision": null,
+                "Scale": null,
+                "DefaultExpression": null,
+                "IsEnum": null,
+                "Enum": null,
+                "Id": "03b00000-ce95-00ac-102b-08d7ddb97d41"
+              }
+            ],
+            "Interfaces": [
+              {
+                "InterfaceName": "IHasId",
+                "IsMixinOnly": false,
+                "Id": "03b00000-ce95-00ac-1958-08d7ddb97d41"
+              }
+            ],
+            "Id": "03b00000-ce95-00ac-21cb-08d7ddb97d41"
+          },
+          {
+            "Name": "ActiveItemList",
+            "Description": null,
+            "ImplementsEntityInterface": true,
+            "Events": [
+              {
+                "Name": "ItemCreated",
+                "Description": null,
+                "Action": null,
+                "Condition": "message.Active",
+                "RemoveExistingViewOnUnmetCondition": false,
+                "InsertMissingView": false,
+                "UpdateVersion": true,
+                "DatabaseAction": "Save",
+                "Id": "03b00000-ce95-00ac-22d9-08d7ddb97d41"
+              },
+              {
+                "Name": "ItemUpdated",
+                "Description": null,
+                "Action": null,
+                "Condition": "message.Active",
+                "RemoveExistingViewOnUnmetCondition": true,
+                "InsertMissingView": true,
+                "UpdateVersion": true,
+                "DatabaseAction": "Save",
+                "Id": "03b00000-ce95-00ac-2320-08d7ddb97d41"
+              },
+              {
+                "Name": "ItemActivated",
+                "Description": null,
+                "Action": null,
+                "Condition": "${dto} == null",
+                "RemoveExistingViewOnUnmetCondition": false,
+                "InsertMissingView": false,
+                "UpdateVersion": true,
+                "DatabaseAction": "Save",
+                "Id": "03b00000-ce95-00ac-235e-08d7ddb97d41"
+              },
+              {
+                "Name": "ItemDeactivated",
+                "Description": null,
+                "Action": null,
+                "Condition": "${dto} != null",
+                "RemoveExistingViewOnUnmetCondition": false,
+                "InsertMissingView": false,
+                "UpdateVersion": false,
+                "DatabaseAction": "Delete",
+                "Id": "03b00000-ce95-00ac-2399-08d7ddb97d41"
+              }
+            ],
+            "Properties": [
+              {
+                "Name": "CreateDate",
+                "Description": null,
+                "Type": "DateTime",
+                "BaseType": "DateTime",
+                "IsId": null,
+                "IsNullable": false,
+                "IsGenerated": null,
+                "Length": null,
+                "Precision": null,
+                "Scale": null,
+                "DefaultExpression": null,
+                "IsEnum": null,
+                "Enum": null,
+                "Id": "03b00000-ce95-00ac-2421-08d7ddb97d41"
+              },
+              {
+                "Name": "Name",
+                "Description": null,
+                "Type": "string",
+                "BaseType": "string",
+                "IsId": null,
+                "IsNullable": false,
+                "IsGenerated": null,
+                "Length": null,
+                "Precision": null,
+                "Scale": null,
+                "DefaultExpression": null,
+                "IsEnum": null,
+                "Enum": null,
+                "Id": "03b00000-ce95-00ac-24d2-08d7ddb97d41"
+              },
+              {
+                "Name": "Description",
+                "Description": null,
+                "Type": "string",
+                "BaseType": "string",
+                "IsId": null,
+                "IsNullable": false,
+                "IsGenerated": null,
+                "Length": null,
+                "Precision": null,
+                "Scale": null,
+                "DefaultExpression": null,
+                "IsEnum": null,
+                "Enum": null,
+                "Id": "03b00000-ce95-00ac-252e-08d7ddb97d41"
+              },
+              {
+                "Name": "Active",
+                "Description": null,
+                "Type": "bool",
+                "BaseType": "bool",
+                "IsId": null,
+                "IsNullable": false,
+                "IsGenerated": null,
+                "Length": null,
+                "Precision": null,
+                "Scale": null,
+                "DefaultExpression": null,
+                "IsEnum": null,
+                "Enum": null,
+                "Id": "03b00000-ce95-00ac-2582-08d7ddb97d41"
+              }
+            ],
+            "Interfaces": [
+              {
+                "InterfaceName": "IHasId",
+                "IsMixinOnly": false,
+                "Id": "03b00000-ce95-00ac-25c3-08d7ddb97d41"
+              }
+            ],
+            "Id": "03b00000-ce95-00ac-25d3-08d7ddb97d41"
+          }
+        ],
+        "Relations": [],
+        "Interfaces": [
+          {
+            "InterfaceName": "IHasIdWithDefault",
+            "IsMixinOnly": true,
+            "Id": "03b00000-ce95-00ac-8843-08d7ddb97d41"
+          }
+        ],
+        "Id": "03b00000-ce95-00ac-90da-08d7ddb97d41"
+      }
+    ],
+    "DomainEnums": [
+      {
+        "Name": "eStatus",
+        "Description": null,
+        "IsFlags": false,
+        "Values": [
+          {
+            "Name": "Open",
+            "IntegerValue": 0,
+            "Id": "03b00000-ce95-00ac-8525-08d7ddb97d42"
+          },
+          {
+            "Name": "Closed",
+            "IntegerValue": 1,
+            "Id": "03b00000-ce95-00ac-8612-08d7ddb97d42"
+          },
+          {
+            "Name": "Voided",
+            "IntegerValue": 2,
+            "Id": "03b00000-ce95-00ac-8641-08d7ddb97d42"
+          }
+        ],
+        "Id": "03b00000-ce95-00ac-8f70-08d7ddb97d42"
+      },
+      {
+        "Name": "ePermission",
+        "Description": null,
+        "IsFlags": true,
+        "Values": [
+          {
+            "Name": "Read",
+            "IntegerValue": 1,
+            "Id": "03b00000-ce95-00ac-9061-08d7ddb97d42"
+          },
+          {
+            "Name": "Write",
+            "IntegerValue": 2,
+            "Id": "03b00000-ce95-00ac-908b-08d7ddb97d42"
+          },
+          {
+            "Name": "Delete",
+            "IntegerValue": 4,
+            "Id": "03b00000-ce95-00ac-90ae-08d7ddb97d42"
+          },
+          {
+            "Name": "Execute",
+            "IntegerValue": 8,
+            "Id": "03b00000-ce95-00ac-90d0-08d7ddb97d42"
+          },
+          {
+            "Name": "Share",
+            "IntegerValue": 16,
+            "Id": "03b00000-ce95-00ac-affa-08d7ddb97d42"
+          }
+        ],
+        "Id": "03b00000-ce95-00ac-b061-08d7ddb97d42"
+      }
+    ],
+    "Interfaces": [
+      {
+        "Name": "IHasId",
+        "Description": null,
+        "Namespace": "Shared",
+        "Properties": [
+          {
+            "Name": "Id",
+            "Description": null,
+            "Type": "Guid",
+            "BaseType": "Guid",
+            "IsId": true,
+            "IsNullable": false,
+            "IsGenerated": null,
+            "Length": null,
+            "Precision": null,
+            "Scale": null,
+            "DefaultExpression": null,
+            "IsEnum": null,
+            "Enum": null,
+            "Id": "03b00000-ce95-00ac-2e80-08d7ddb97d45"
+          }
+        ],
+        "Interfaces": [],
+        "Id": "03b00000-ce95-00ac-3f58-08d7ddb97d45"
+      },
+      {
+        "Name": "IHasIdWithDefault",
+        "Description": null,
+        "Namespace": null,
+        "Properties": [
+          {
+            "Name": "Id",
+            "Description": null,
+            "Type": "Guid",
+            "BaseType": "Guid",
+            "IsId": null,
+            "IsNullable": false,
+            "IsGenerated": null,
+            "Length": null,
+            "Precision": null,
+            "Scale": null,
+            "DefaultExpression": "NewId.NextGuid()",
+            "IsEnum": null,
+            "Enum": null,
+            "Id": "03b00000-ce95-00ac-409f-08d7ddb97d45"
+          }
+        ],
+        "Interfaces": [
+          {
+            "InterfaceName": "IHasId",
+            "IsMixinOnly": false,
+            "Id": "03b00000-ce95-00ac-40f4-08d7ddb97d45"
+          }
+        ],
+        "Id": "03b00000-ce95-00ac-4106-08d7ddb97d45"
+      }
+    ],
+    "Id": "03b00000-ce95-00ac-4984-08d7ddb97d45"
+  }

@@ -4,7 +4,8 @@
   "description": "Letter B - Generator - Templates for CQRS / ES",
   "main": "generate-cqrs-es.js",
   "scripts": {
-    "test": "test.js"
+    "test": "test.js",
+    "postinstall": "node ./postinstall.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   },
   "homepage": "https://github.com/dustylau/lb.generator.handlebars.templates.cqrs.es#readme",
   "dependencies": {
+    "gently-copy": "^3.2.0",
     "lb.generator.handlebars": "^1.1.4"
   }
 }
