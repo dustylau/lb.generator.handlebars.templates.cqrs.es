@@ -9,8 +9,10 @@ const model = require("./models/sample-cqrs-es-model.json");
 PrepareModel.prepare(model);
 
 // By default, the templates will be generated with the following default global static values:
-Generator.TemplateSettings.DefaultTarget = "DomainModel";
+Generator.TemplateSettings.DefaultTarget = "Model";
 Generator.TemplateSettings.DefaultTargetItem = "entity";
+Generator.TemplateSettings.DefaultTargetProperty = "entities";
+Generator.TemplateSettings.DefaultModelProperty = "domain";
 Generator.TemplateSettings.DefaultTargetItemNameProperty = "Name";
 
 // Create a Template Loader and pass it the directory containing the templates.
