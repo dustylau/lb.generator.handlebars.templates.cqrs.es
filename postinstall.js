@@ -10,7 +10,7 @@
 
 var gentlyCopy = require('gently-copy');
 
-var filesToCopy = ['generate-cqrs-es.js', 'templates/cqrs.es', 'models'];
+var filesToCopy = ['generate-cqrs-es.js', 'templates', 'models'];
 
 // User's local directory
 var userPath = process.env.INIT_CWD;
