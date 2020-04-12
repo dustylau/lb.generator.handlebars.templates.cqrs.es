@@ -1,6 +1,6 @@
 {
   "name": "lb.generator.handlebars.templates.cqrs.es",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Letter B - Generator - Templates for CQRS / ES",
   "main": "generate-cqrs-es.js",
   "scripts": {
