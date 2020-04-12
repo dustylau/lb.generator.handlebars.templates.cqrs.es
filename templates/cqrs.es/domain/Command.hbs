@@ -6,10 +6,10 @@ using {{domain.CoreESNamespace}}.Interfaces;
 using {{domain.CoreNamespace}}.Logging;
 using MassTransit;
 using Microsoft.Extensions.Logging;
-using {{domain.Namespace}}.Aggregates;
-using {{domain.Namespace}}.Shared;
+using {{domain.Namespace}}.Domain.Aggregates;
+using {{domain.Namespace}}.Domain.Shared;
 
-namespace {{domain.Namespace}}.Commands
+namespace {{domain.Namespace}}.Domain.Commands
 {
     {{#each entity.Actions}}
     public partial class {{Command}} : Command{{#unless UseConstructor}}, IHasOriginalVersion{{/unless}}

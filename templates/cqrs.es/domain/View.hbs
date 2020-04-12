@@ -8,11 +8,12 @@ using {{domain.CoreNamespace}}.Logging;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using PetaPoco;
-using {{domain.Namespace}}.Dtos;
-using {{domain.Namespace}}.Events;
-using {{domain.Namespace}}.Shared;
+using {{domain.Namespace}}.Domain.Core.Shared;
+using {{domain.Namespace}}.Domain.Dtos;
+using {{domain.Namespace}}.Domain.Events;
+using {{domain.Namespace}}.Domain.Shared;
 
-namespace {{domain.Namespace}}.Views
+namespace {{domain.Namespace}}.Domain.Views
 {
     {{#each entity.Views}}
     [CreateTable({{dtoName}}.CreateViewTableStatement)]

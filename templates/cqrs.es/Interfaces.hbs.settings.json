@@ -1,8 +1,0 @@
-{
-    "Target": "Domain",
-    "ExportPath": "{{domain.ProjectRoot}}\\\\{{domain.Namespace}}\\Interfaces\\\\{{FileName}}",
-    "AppendToExisting": false,
-    "FileNamePattern": "//\\[(?<FileName>[^\\[]+)\\]",
-    "RemoveFileName": true,
-    "SplitOn": "//##SPLIT##"
-}

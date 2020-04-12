@@ -1,10 +1,10 @@
 using System;
 using {{domain.CoreESNamespace}};
 using {{domain.CoreESNamespace}}.Interfaces;
-using {{domain.Namespace}}.Events;
-using {{domain.Namespace}}.Shared;
+using {{domain.Namespace}}.Domain.Events;
+using {{domain.Namespace}}.Domain.Shared;
 
-namespace {{domain.Namespace}}.Aggregates
+namespace {{domain.Namespace}}.Domain.Aggregates
 {
     public partial class {{entity.Name}} : {{#if entity.Snapshottable}}SnapshottableAggregate<{{entity.Name}}>{{else}}Aggregate{{/if}}{{#each entity.Actions}},
         IApplyEvent<{{Event}}>{{/each}}

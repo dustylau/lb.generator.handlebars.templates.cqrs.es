@@ -17,7 +17,7 @@ Generator.TemplateSettings.DefaultTargetItemNameProperty = "Name";
 
 // Create a Template Loader and pass it the directory containing the templates.
 // The loader will automatically load all template files ending in ".hbs" and their corresponding settings ".hbs.settings.json"
-var loader = new Generator.TemplateLoader('./templates/cqrs.es');
+var loader = new Generator.TemplateLoader('./templates/cqrs.es/domain');
 
 // Load the templates with a callback containing the list of loaded templates
 loader.load(function (templates) {

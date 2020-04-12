@@ -1,10 +1,10 @@
 {{#each Interfaces}}
 using System;
 {{#each Namespaces}}
-using {{../../Namespace}}.Interfaces.{{.}};
+using {{../../Namespace}}.Domain.Interfaces.{{.}};
 {{/each}}
 
-namespace {{../Namespace}}.Interfaces{{#if Namespace}}.{{Namespace}}{{/if}}
+namespace {{../Namespace}}.Domain.Interfaces{{#if Namespace}}.{{Namespace}}{{/if}}
 {
     public interface {{Name}}{{#each Interfaces as |interface|}}{{#unless IsMixinOnly}}{{#if @first}} :{{else}},{{/if}}
         {{interface.InterfaceName}}{{/unless}}{{/each}}

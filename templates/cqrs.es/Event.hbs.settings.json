@@ -1,5 +1,0 @@
-{
-    "Target": "DomainEntities",
-    "ExportPath": "{{domain.ProjectRoot}}\\\\{{domain.Namespace}}\\Events\\\\{{entity.Name}}Events.cs",
-    "AppendToExisting": false
-}

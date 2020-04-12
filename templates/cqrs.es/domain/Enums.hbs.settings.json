@@ -1,6 +1,6 @@
 {
-    "Target": "Domain",
-    "ExportPath": "{{domain.ProjectRoot}}\\\\{{domain.Namespace}}\\Shared\\\\{{FileName}}",
+    "Target": "Model",
+    "ExportPath": "{{ProjectRoot}}\\\\{{Namespace}}.Domain\\Shared\\\\{{FileName}}",
     "AppendToExisting": false,
     "FileNamePattern": "//\\[(?<FileName>\\w+\\.cs)\\]",
     "RemoveFileName": true,
