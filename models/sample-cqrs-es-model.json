@@ -2,7 +2,7 @@
     "ProjectRoot": ".\\Generated",
     "CoreNamespace": "LB.Core",
     "CoreESNamespace": "LB.Core.ES",
-    "Namespace": "LB.Sample.Domain",
+    "Namespace": "LB.Sample",
     "DomainEntities": [
       {
         "Name": "Item",
