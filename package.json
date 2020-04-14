@@ -26,6 +26,6 @@
   "homepage": "https://github.com/dustylau/lb.generator.handlebars.templates.cqrs.es#readme",
   "dependencies": {
     "gently-copy": "^3.2.0",
-    "lb.generator.handlebars": "^1.2.11"
+    "lb.generator.handlebars": "^1.2.12"
   }
 }
