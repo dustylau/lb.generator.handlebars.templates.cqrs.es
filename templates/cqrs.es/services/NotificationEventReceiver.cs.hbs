@@ -1,0 +1,55 @@
+using System.Threading.Tasks;
+using CommonServiceLocator;
+using {{CoreESNamespace}}.Interfaces;
+using {{CoreNamespace}}.Logging;
+using MassTransit;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using {{Namespace}}.Domain.Events;
+
+namespace {{Namespace}}.Service.Notification
+{
+    public class NotificationEventReceiver :
+        IView{{#each DomainEntities}}{{#each Actions}}{{#if (contains Tags 'PublishNotification')}},
+        IConsumer<{{Event}}>{{/if}}{{/each}}{{/each}}
+    {
+        private readonly ILogger _log;
+        private readonly Instance<IWebHost> _webHost;
+        private NotificationBroadcaster _broadcaster;
+
+        private NotificationBroadcaster Broadcaster
+        {
+            get
+            {
+                return _broadcaster ??= _webHost.Value.Services.GetService<NotificationBroadcaster>();
+            }
+        }
+
+        public NotificationEventReceiver()
+        {
+            _webHost = ServiceLocator.Current.GetInstance<Instance<IWebHost>>();
+            _log = ServiceLocator.Current.GetInstance<ILogger>();
+        }
+
+        private async Task Send<T>(T message)
+        {
+            if (Broadcaster == null)
+                return;
+
+            await Broadcaster.Send(message);
+        }
+        {{#each DomainEntities}}
+        {{#each Actions}}
+        {{#if (contains Tags 'PublishNotification')}}
+
+        public async Task Consume(ConsumeContext<{{Event}}> context)
+        {
+            _log.Info($"Sending {{Event}}: {context.Message.Id}");
+            await Send(context.Message);
+        }
+        {{/if}}
+        {{/each}}
+        {{/each}}
+    }
+}

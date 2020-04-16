@@ -1,0 +1,465 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Reflection;
+using EventStore.ClientAPI;
+using EventStore.ClientAPI.SystemData;
+using Lamar;
+using {{CoreESNamespace}};
+using {{CoreESNamespace}}.Interfaces;
+using {{CoreNamespace}}.IOC;
+using {{CoreNamespace}}.IOC.Interfaces;
+using {{CoreNamespace}}.Logging;
+using {{CoreNamespace}}.Logging.Log4Net;
+using {{CoreNamespace}}.Service;
+using {{CoreNamespace}}.Service.Interfaces;
+using {{CoreNamespace}}.Shared;
+using log4net.Config;
+using MassTransit;
+using MassTransit.Context;
+using MassTransit.RabbitMqTransport;
+using Microsoft.Extensions.Logging;
+using PetaPoco;
+using PetaPoco.Providers;
+using {{Namespace}}.Domain.Commands;
+using {{Namespace}}.Domain.Events;
+using {{Namespace}}.Domain.Requests;
+using {{Namespace}}.Domain.Views;
+using {{Namespace}}.Shared;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
+
+namespace {{Namespace}}.IOC
+{
+    public class Bootstrapper : BootstrapperBase<Bootstrapper>
+    {
+        public ISettings Settings { get; } = new Settings();
+
+        public Action<ILoggerFactory> ConfigureLogger { get; set; } = factory =>
+        {
+        };
+
+        public Action<ILoggingBuilder> ConfigureLoggingBuilder { get; set; } = builder =>
+        {
+        };
+
+        public Func<ILoggerFactory, ILogger> CreateLogger { get; set; } = factory => factory.CreateLogger("{{Namespace}}");
+
+        public Bootstrapper()
+        {
+            Configure(configuration =>
+            {
+                var log4NetConfigPath = ConfigHelper.Get<string>( "Log4NetConfigPath", "log4net.config");
+                var log4NetConfigFileInfo = new FileInfo(log4NetConfigPath);
+
+                if (!log4NetConfigFileInfo.Exists)
+                {
+                    log4NetConfigPath = $"{ConfigHelper.ConfigFileDirectory}\\{log4NetConfigPath}";
+                    log4NetConfigFileInfo = new FileInfo(log4NetConfigPath);
+                    if (!log4NetConfigFileInfo.Exists)
+                        log4NetConfigFileInfo = null;
+                }
+
+                var loggerRepository = log4net.LogManager.CreateRepository(
+                    Assembly.GetEntryAssembly(),
+                    typeof(log4net.Repository.Hierarchy.Hierarchy)
+                    );
+
+                if (log4NetConfigFileInfo != null)
+                    XmlConfigurator.Configure(loggerRepository, log4NetConfigFileInfo);
+                else
+                    BasicConfigurator.Configure(loggerRepository);
+
+                var loggerFactory = LoggerFactory
+                    .Create(ConfigureLoggingBuilder)
+                    .AddLog4Net(log4NetConfigPath);
+
+                ConfigureLogger.Invoke(loggerFactory);
+
+                var logger = CreateLogger == null ? loggerFactory.CreateLogger("{{Namespace}}") : CreateLogger(loggerFactory);
+
+                configuration.ForSingletonOf<ISettings>().Use(Settings);
+
+                configuration.ForSingletonOf<ILogger>().Use(logger);
+
+                configuration.ForSingletonOf<IFactory>().Use<ServiceLocatorFactory>();
+
+                configuration.ForSingletonOf<UserCredentials>().Use(
+                    context =>
+                        new UserCredentials(
+                            Settings.EventStoreUserName,
+                            Settings.EventStorePassword
+                        )
+                );
+
+                configuration.ForSingletonOf<IPEndPoint>().Use(
+                        NetworkHelper.IPEndPointFromHostNameOrIPAddress(
+                            Settings.EventStoreAddress,
+                            Settings.EventStoreWebPort,
+                            false
+                        )
+                    )
+                    .Named("EventStoreEndPoint");
+
+                configuration.ForSingletonOf<IPEndPoint>().Use(
+                        NetworkHelper.IPEndPointFromHostNameOrIPAddress(
+                            Settings.EventStoreAddress,
+                            Settings.EventStorePort,
+                            false
+                        )
+                    )
+                    .Named("EventStoreConnectionEndPoint");
+
+                configuration.For<EventStore.ClientAPI.ILogger>().Use<EventStoreLoggerAdapter>();
+
+                configuration.For<ConnectionSettings>().Use(
+                    context =>
+                    {
+                        var connectionSettings = ConnectionSettings
+                            .Create()
+                            .UseCustomLogger(context.GetInstance<EventStore.ClientAPI.ILogger>());
+
+                        if (ConfigHelper.Get<bool>("EnableVerboseLogging", false))
+                            connectionSettings = connectionSettings.EnableVerboseLogging();
+
+                        return connectionSettings.Build();
+                    }
+                );
+
+                configuration.ForSingletonOf<IEventStoreConnection>().Use(
+                    context =>
+                        EventStoreConnection.Create(
+                            context.GetInstance<ConnectionSettings>(),
+                            context.GetInstance<IPEndPoint>("EventStoreConnectionEndPoint")
+                        )
+                );
+                
+                configuration.ForSingletonOf<EventStoreProcessor>().Use(
+                    context => new EventStoreProcessor(
+                        context.GetInstance<ILogger>(),
+                        context.GetInstance<IPEndPoint>("EventStoreEndPoint"),
+                        context.GetInstance<IEventStoreConnection>(),
+                        context.GetInstance<UserCredentials>(),
+                        context.GetInstance<IDictionary<string, Type>>())
+                );
+
+                var eventTypes = AssemblyScanner.AssembliesContaining<ContainerCreated>()
+                    .IncludeNamespace<ContainerCreated>()
+                    .Where(t => typeof(IEvent).IsAssignableFrom(t))
+                    .Scan()
+                    .ToList();
+
+                configuration.ForSingletonOf<IDictionary<string, Type>>().Use(eventTypes.ToDictionary(e => e.FullName));
+
+                configuration.ForSingletonOf<string>()
+                    .Use(Settings.MainConnectionString).Named("ConnectionString");
+
+                configuration.For<IDatabase>()
+                    .Use(context => DatabaseConfiguration.Build()
+                        .UsingConnectionString(context.GetInstance<string>("ConnectionString"))
+                        .UsingProvider<SqlServerDatabaseProvider>()
+                        .Create()
+                    );
+
+                configuration.For<ViewStore>().Use<ViewStore>();
+
+                var viewTables = AssemblyScanner.AssembliesContaining<ContainerList>()
+                    .IncludeNamespace<ContainerList>()
+                    .Where(t => typeof(IView).IsAssignableFrom(t))
+                    .Scan()
+                    .ToList();
+
+                var createTableAttributes = viewTables.Select(v => v.GetCustomAttribute<CreateTableAttribute>()).Where(a => a != null).ToList();
+
+                configuration.ForSingletonOf<IList<CreateTableAttribute>>().Use(createTableAttributes);
+
+                configuration.ForSingletonOf<IRepository>().Use<Repository>();
+
+                var aggregates = AssemblyScanner.AssembliesContaining<{{Namespace}}.Domain.Aggregates.Container>()
+                    .IncludeNamespace<{{Namespace}}.Domain.Aggregates.Container>()
+                    .Where(t => typeof(IAggregate).IsAssignableFrom(t))
+                    .Scan()
+                    .ToList();
+
+                configuration.For<IAggregateFactory>().Use<AggregateFactory>();
+
+                configuration.ForSingletonOf<IAggregateTypeProvider>().Use(context => new AggregateTypeProvider(aggregates));
+
+                configuration.ForSingletonOf<IAggregateCache>().Use(
+                    context => new AggregateCache(5, context.GetInstance<ILogger>())
+                );
+
+                configuration.ForSingletonOf<IEventStore>().Use(context =>
+                    new {{CoreESNamespace}}.EventStore(
+                        context.GetInstance<ILogger>(),
+                        context.GetInstance<EventStoreProcessor>(),
+                        context.GetInstance<IBusControl>("SendBus"),
+                        context.GetInstance<IAggregateTypeProvider>()
+                    )
+                );
+
+                configuration.ForSingletonOf<string>().Use(Settings.MessageQueueAddress).Named("host_address");
+
+                configuration.ForSingletonOf<string>().Use(Settings.MessageQueueName).Named("queue_name");
+
+                configuration.ForSingletonOf<string>().Use(Settings.MessageQueueUserName).Named("queue_user");
+
+                configuration.ForSingletonOf<string>().Use(Settings.MessageQueuePassword).Named("queue_password");
+
+                configuration.ForSingletonOf<Uri>()
+                    .Use(context => new Uri(context.GetInstance<string>("host_address"))).Named("host_uri");
+
+                configuration.ForSingletonOf<Uri>()
+                    .Use(context => new Uri(context.GetInstance<string>("host_address") + "/" +
+                                            context.GetInstance<string>("queue_name"))).Named("queue_uri");
+
+                var consumerTypes = AssemblyScanner.AssembliesContaining<{{Namespace}}.Domain.Aggregates.Container>()
+                    .IncludeNamespace<ContainerCommandHandlers>()
+                    .IncludeNamespace<ContainerList>()
+                    .IncludeNamespace<ContainerRequestHandlers>()
+                    .ImplementsGenericType(typeof(IConsumer<>))
+                    .Scan()
+                    .ToList();
+
+                configuration.For<IList<Type>>().Use(consumerTypes).Named("consumer_types");
+
+                /*
+                configuration.AddMassTransit(
+                    c =>
+                    {
+                        c.AddConsumersFromNamespaceContaining<PalletCommandHandlers>();
+                        c.AddConsumersFromNamespaceContaining<PalletList>();
+                    });
+                    */
+
+                if (ConfigHelper.Get<bool>("EnableBusLogging", false))
+                {
+                    //ILogger logger = new CommonLoggingLogger(log, "Default", true);
+                    LogContext.ConfigureCurrentLogContext(logger);
+                }
+
+                configuration.ForSingletonOf<IBusControl>().Use(
+                    context => Bus.Factory.CreateUsingRabbitMq(
+                        config =>
+                        {
+                            var host = config.Host(
+                                context.GetInstance<Uri>("host_uri"),
+                                configurator =>
+                                {
+                                    configurator.Username(context.GetInstance<string>("queue_user"));
+                                    configurator.Password(context.GetInstance<string>("queue_password"));
+                                }
+                            );
+                        }
+                    )
+                ).Named("SendBus");
+
+                configuration.For<Action<IServiceContext, IRabbitMqReceiveEndpointConfigurator>>().Add(ConfigureConsumers);
+
+                configuration.ForSingletonOf<IBusControl>().Use(
+                    context => Bus.Factory.CreateUsingRabbitMq(
+                        config =>
+                        {
+                            var host = config.Host(
+                                context.GetInstance<Uri>("host_uri"),
+                                configurator =>
+                                {
+                                    configurator.Username(context.GetInstance<string>("queue_user"));
+                                    configurator.Password(context.GetInstance<string>("queue_password"));
+                                }
+                            );
+
+                            config.ReceiveEndpoint(
+                                context.GetInstance<string>("queue_name"),
+                                configurator =>
+                                {
+                                    var configurators = context.GetAllInstances<Action<IServiceContext, IRabbitMqReceiveEndpointConfigurator>>();
+
+                                    foreach (var action in configurators)
+                                        action(context, configurator);
+                                });
+                        }
+                    )
+                ).Named("ReceiveBus");
+
+                configuration.ForSingletonOf<IFactory<HttpClient>>().Use<ApiHttpClientFactory>().Named("ApiClientFactory");
+                configuration.For<IServiceConnection>().Use<ServiceConnection>().Named("ApiServiceConnection")
+                    .Ctor<IFactory<HttpClient>>("clientFactory").IsNamedInstance("ApiClientFactory");
+            });
+        }
+
+        private static void ConfigureConsumers(IServiceContext serviceContext, IRabbitMqReceiveEndpointConfigurator configurator)
+        {
+            var consumers = serviceContext.GetInstance<IList<Type>>("consumer_types");
+
+            if (!consumers.Any())
+                throw new Exception("No Consumers were found.");
+
+            var type = typeof(ConsumerExtensions);
+
+            var methods = type
+                .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                .Where(mi => mi.Name == "Consumer");
+
+            var method = methods.Single(m =>
+                m.GetParameters()[1].ParameterType.GetGenericArguments().Count() == 1
+                && m.GetParameters().Count() == 2);
+
+
+            foreach (var consumerType in consumers)
+            {
+                var genericMethod = method.MakeGenericMethod(consumerType);
+                genericMethod.Invoke(null, new object[] {configurator, null});
+            }
+        }
+    }
+}
+
+//[{{Namespace}}.IOC/Bootstrapper.cs]
+//##SPLIT##
+﻿using System;
+using {{CoreNamespace}}.Logging;
+using Microsoft.Extensions.Logging;
+using IEventStoreLogger = EventStore.ClientAPI.ILogger;
+
+namespace {{Namespace}}.IOC
+{
+    public class EventStoreLoggerAdapter : IEventStoreLogger
+    {
+        private readonly ILogger _log;
+
+        public EventStoreLoggerAdapter(ILogger log)
+        {
+            _log = log;
+        }
+
+        public void Error(string format, params object[] args)
+        {
+            _log.Error(string.Format(format, args));
+        }
+
+        public void Error(Exception ex, string format, params object[] args)
+        {
+            _log.Error(string.Format(format, args), ex);
+        }
+
+        public void Info(string format, params object[] args)
+        {
+            _log.Info( string.Format(format, args));
+        }
+
+        public void Info(Exception ex, string format, params object[] args)
+        {
+            _log.Info(string.Format(format, args), ex);
+        }
+
+        public void Debug(string format, params object[] args)
+        {
+            _log.Debug(string.Format(format, args));
+        }
+
+        public void Debug(Exception ex, string format, params object[] args)
+        {
+            _log.Debug(string.Format(format, args), ex);
+        }
+    }
+}
+//[{{Namespace}}.IOC/EventStoreLoggerAdapter.cs]
+//##SPLIT##
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<log4net>
+  <appender name="RollingLogFileAppender" type="log4net.Appender.RollingFileAppender">
+    <lockingModel type="log4net.Appender.FileAppender+MinimalLock"/>
+    <file value="C:\Temp\" />
+    <datePattern value="yyyy-MM-dd.'txt'"/>
+    <staticLogFileName value="false"/>
+    <appendToFile value="true"/>
+    <rollingStyle value="Date"/>
+    <maxSizeRollBackups value="100"/>
+    <maximumFileSize value="15MB"/>
+    <layout type="log4net.Layout.PatternLayout">
+      <conversionPattern value="%date [%thread] %-5level App  %newline %message %newline %newline"/>
+    </layout>
+  </appender>
+  <appender name="ColoredConsoleAppender" type="log4net.Appender.ColoredConsoleAppender">
+    <mapping>
+      <level value="ERROR" />
+      <foreColor value="White" />
+      <backColor value="Red, HighIntensity" />
+    </mapping>
+    <layout type="log4net.Layout.PatternLayout">
+      <conversionPattern value="%date [%thread] %-5level %logger [%property{NDC}] - %message%newline" />
+    </layout>
+  </appender>
+  <root>
+    <level value="ALL"/>
+    <appender-ref ref="ColoredConsoleAppender"/>
+    <appender-ref ref="RollingLogFileAppender"/>
+  </root>
+</log4net>
+//[{{Namespace}}.IOC/log4net.config]
+//##SPLIT##
+﻿
+using System;
+using {{CoreESNamespace}}.Interfaces;
+using {{CoreNamespace}}.Shared;
+using Microsoft.Extensions.Logging;
+
+namespace {{Namespace}}.IOC
+{
+    public class Settings : ISettings
+    {
+        public string EventStoreAddress { get; } =  ConfigHelper.Get<string>("EventStoreAddress", "{{#if CustomProperties.EventStoreAddress.Value}}{{{CustomProperties.EventStoreAddress.Value}}}{{else}}localhost{{/if}}");
+        public int EventStorePort { get; } = ConfigHelper.Get<int>("EventStorePort", {{#if CustomProperties.EventStorePort.Value}}{{{CustomProperties.EventStorePort.Value}}}{{else}}1113{{/if}});
+        public int EventStoreWebPort { get; } = ConfigHelper.Get<int>("EventStoreWebPort", {{#if CustomProperties.EventStoreWebPort.Value}}{{{CustomProperties.EventStoreWebPort.Value}}}{{else}}2113{{/if}});
+        public string EventStoreUserName { get; } = ConfigHelper.Get<string>("EventStoreUserName", "{{#if CustomProperties.EventStoreUserName.Value}}{{{CustomProperties.EventStoreUserName.Value}}}{{else}}admin{{/if}}");
+        public string EventStorePassword { get; } = ConfigHelper.Get<string>("EventStorePassword", "{{#if CustomProperties.EventStorePassword.Value}}{{{CustomProperties.EventStorePassword.Value}}}{{else}}changeit{{/if}}");
+        public string EventStoreEndpoint => $"tcp://{EventStoreUserName}:{EventStorePassword}@{EventStoreAddress}:{EventStorePort}";
+        public string MainConnectionString { get; } = ConfigHelper.ConnectionString("Main");
+
+        public string MessageQueueAddress { get; } =
+            ConfigHelper.Get<string>("MessageQueueAddress", "{{#if CustomProperties.MessageQueueAddress.Value}}{{{CustomProperties.MessageQueueAddress.Value}}}{{else}}rabbitmq://localhost{{/if}}");
+
+        public string MessageQueueName { get; } = ConfigHelper.Get<string>("MessageQueueName", "{{#if CustomProperties.MessageQueueName.Value}}{{{CustomProperties.MessageQueueName.Value}}}{{else}}message_queue{{/if}}");
+        public string MessageQueueUserName { get; } = ConfigHelper.Get<string>("MessageQueueUserName", "{{#if CustomProperties.MessageQueueUserName.Value}}{{{CustomProperties.MessageQueueUserName.Value}}}{{else}}admin{{/if}}");
+        public string MessageQueuePassword { get; } = ConfigHelper.Get<string>("MessageQueuePassword", "{{#if CustomProperties.MessageQueuePassword.Value}}{{{CustomProperties.MessageQueuePassword.Value}}}{{else}}changeit{{/if}}");
+    }
+}
+//[{{Namespace}}.IOC/Settings.cs]
+//##SPLIT##
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommonServiceLocator" Version="2.0.5" />
+    <PackageReference Include="Lamar" Version="4.2.1" />
+    <PackageReference Include="{{CoreESNamespace}}" Version="2020.4.8.2253" />
+    <PackageReference Include="{{CoreESNamespace}}.Interfaces" Version="2020.4.8.2253" />
+    <PackageReference Include="{{CoreNamespace}}.IOC" Version="2020.4.8.2252" />
+    <PackageReference Include="{{CoreNamespace}}.IOC.Interfaces" Version="2020.4.8.2252" />
+    <PackageReference Include="{{CoreNamespace}}.Logging" Version="2020.4.8.2252" />
+    <PackageReference Include="{{CoreNamespace}}.Service" Version="2020.4.8.2252" />
+    <PackageReference Include="{{CoreNamespace}}.Service.Interfaces" Version="2020.4.8.2252" />
+    <PackageReference Include="{{CoreNamespace}}.Shared" Version="2020.4.8.2252" />
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="MassTransit" Version="6.2.4" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="6.2.4" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="3.1.3" />
+    <PackageReference Include="PetaPoco.Compiled" Version="6.0.441" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\\{{Namespace}}.Domain\\{{Namespace}}.Domain.csproj" />
+    <ProjectReference Include="..\\{{Namespace}}.Shared\\{{Namespace}}.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
+
+//[{{Namespace}}.IOC/{{Namespace}}.IOC.csproj]

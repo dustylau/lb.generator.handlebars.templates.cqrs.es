@@ -1,0 +1,88 @@
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web.Http;
+using CommonServiceLocator;
+using {{domain.CoreNamespace}}.Service;
+using MassTransit;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using {{domain.Namespace}}.Domain.Dtos;
+using {{domain.Namespace}}.Domain.Requests;
+using {{domain.Namespace}}.Domain.Views;
+
+namespace {{domain.Namespace}}.API.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class {{entity.Name}}Controller : ControllerBase
+    {
+        private readonly ViewStore _viewStore;
+        private readonly IBusControl _bus;
+
+        public {{entity.Name}}Controller()
+        {
+            _viewStore = ServiceLocator.Current.GetInstance<ViewStore>();
+            _bus = ServiceLocator.Current.GetInstance<IBusControl>("SendBus");
+            _bus.Start();
+        }
+        {{#each entity.Views}}
+        {{#if (contains Tags 'API')}}
+
+        [HttpGet{{#if controllerRoute}}("{{controllerRoute}}"){{/if}}]
+        public async Task<ServiceResponse<IEnumerable<{{dtoName}}>>> GetAll{{controllerRoute}}()
+        {
+            try
+            {
+                var data = await _viewStore.Get{{Name}}();
+                return new ServiceResponse<IEnumerable<{{dtoName}}>>(HttpStatusCode.OK, data);
+            }
+            catch (Exception e)
+            {
+                return new ServiceResponse<IEnumerable<{{dtoName}}>>(HttpStatusCode.InternalServerError, e);
+            }
+        }
+
+        [HttpGet("{{#if controllerRoute}}{{controllerRoute}}/{{/if}}{id}")]
+        public async Task<ServiceResponse<{{dtoName}}>> Get{{controllerRoute}}ById(Guid id)
+        {
+            try
+            {
+                var data = await _viewStore.Get{{dtoName}}(id);
+                return new ServiceResponse<{{dtoName}}>(
+                    data == null
+                        ? HttpStatusCode.NotFound
+                        : HttpStatusCode.OK,
+                    data
+                );
+            }
+            catch (Exception e)
+            {
+                return new ServiceResponse<{{dtoName}}>(HttpStatusCode.InternalServerError, e);
+            }
+        }
+        {{/if}}
+        {{/each}}
+        {{#each entity.Actions}}
+        {{#if (contains Tags 'API')}}
+
+        [HttpPost]
+        [Route("{{Name}}")]
+        public async Task<ServiceResponse<{{Command}}Response>> {{Command}}([FromBody]{{Command}}Request request)
+        {
+            try
+            {
+                var client = _bus.CreateRequestClient<{{Command}}Request>();
+                var response = await client.GetResponse<{{Command}}Response>(request);
+                return new ServiceResponse<{{Command}}Response>(response.Message);
+            }
+            catch (Exception e)
+            {
+                return new ServiceResponse<{{Command}}Response>(e);
+            }
+        }
+        {{/if}}
+        {{/each}}
+    }
+}
