@@ -145,8 +145,8 @@ namespace {{Namespace}}.IOC
                         context.GetInstance<IDictionary<string, Type>>())
                 );
 
-                var eventTypes = AssemblyScanner.AssembliesContaining<ContainerCreated>()
-                    .IncludeNamespace<ContainerCreated>()
+                var eventTypes = AssemblyScanner.AssembliesContaining<{{FirstEvent}}>()
+                    .IncludeNamespace<{{FirstEvent}}>()
                     .Where(t => typeof(IEvent).IsAssignableFrom(t))
                     .Scan()
                     .ToList();
@@ -165,8 +165,8 @@ namespace {{Namespace}}.IOC
 
                 configuration.For<ViewStore>().Use<ViewStore>();
 
-                var viewTables = AssemblyScanner.AssembliesContaining<ContainerList>()
-                    .IncludeNamespace<ContainerList>()
+                var viewTables = AssemblyScanner.AssembliesContaining<{{FirstView}}>()
+                    .IncludeNamespace<{{FirstView}}>()
                     .Where(t => typeof(IView).IsAssignableFrom(t))
                     .Scan()
                     .ToList();
@@ -177,8 +177,8 @@ namespace {{Namespace}}.IOC
 
                 configuration.ForSingletonOf<IRepository>().Use<Repository>();
 
-                var aggregates = AssemblyScanner.AssembliesContaining<{{Namespace}}.Domain.Aggregates.Container>()
-                    .IncludeNamespace<{{Namespace}}.Domain.Aggregates.Container>()
+                var aggregates = AssemblyScanner.AssembliesContaining<{{Namespace}}.Domain.Aggregates.{{FirstAggregate}}>()
+                    .IncludeNamespace<{{Namespace}}.Domain.Aggregates.{{FirstAggregate}}>()
                     .Where(t => typeof(IAggregate).IsAssignableFrom(t))
                     .Scan()
                     .ToList();
@@ -215,10 +215,10 @@ namespace {{Namespace}}.IOC
                     .Use(context => new Uri(context.GetInstance<string>("host_address") + "/" +
                                             context.GetInstance<string>("queue_name"))).Named("queue_uri");
 
-                var consumerTypes = AssemblyScanner.AssembliesContaining<{{Namespace}}.Domain.Aggregates.Container>()
-                    .IncludeNamespace<ContainerCommandHandlers>()
-                    .IncludeNamespace<ContainerList>()
-                    .IncludeNamespace<ContainerRequestHandlers>()
+                var consumerTypes = AssemblyScanner.AssembliesContaining<{{Namespace}}.Domain.Aggregates.{{FirstAggregate}}>()
+                    .IncludeNamespace<{{FirstAggregate}}CommandHandlers>()
+                    .IncludeNamespace<{{FirstView}}>()
+                    .IncludeNamespace<{{FirstAggregate}}RequestHandlers>()
                     .ImplementsGenericType(typeof(IConsumer<>))
                     .Scan()
                     .ToList();
