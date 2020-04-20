@@ -8,6 +8,62 @@ const mergeValue = function(value, defaultValue) {
     return isEmpty(value) ? defaultValue : value;
 };
 
+const mergeProperties = function(source, destination, options) 
+{
+    options = options || {};
+
+    if (isEmpty(options.addMissingProperties))
+        options.addMissingProperties = false;
+    
+    if (isEmpty(options.isInherited))
+        options.isInherited = false;
+    
+    if (isEmpty(options.addPropertyCallback))
+        options.addPropertyCallback = null;
+
+    for (const sourceProperty of source.Properties) {
+        var property = destination.Properties.find(p => p.Name == sourceProperty.Name);
+
+        if (!property) {
+
+            if (!options.addMissingProperties)
+                continue;
+            
+            var newProperty = Object.assign({}, sourceProperty);
+
+            newProperty.Inherited = options.isInherited;
+
+            if (options.addPropertyCallback) {
+                options.addPropertyCallback(newProperty);
+            }
+
+            if (newProperty.IsId) {
+                destination.Properties.splice(0, 0, newProperty);
+                continue;
+            }
+
+            destination.Properties.push(newProperty);
+            continue;
+        }
+
+        property.Name = mergeValue(property.Name, sourceProperty.Name);
+        property.Description = mergeValue(property.Description, sourceProperty.Description);
+        property.Type = mergeValue(property.Type, sourceProperty.Type);
+        property.BaseType = mergeValue(property.BaseType, sourceProperty.BaseType);
+        property.IsId = mergeValue(property.IsId, sourceProperty.IsId);
+        property.IsNullable = mergeValue(property.IsNullable, sourceProperty.IsNullable);
+        property.IsGenerated = mergeValue(property.IsGenerated, sourceProperty.IsGenerated);
+        property.Length = mergeValue(property.Length, sourceProperty.Length);
+        property.Precision = mergeValue(property.Precision, sourceProperty.Precision);
+        property.Scale = mergeValue(property.Scale, sourceProperty.Scale);
+        property.DefaultExpression = mergeValue(property.DefaultExpression, sourceProperty.DefaultExpression);
+        property.IsEnum = mergeValue(property.IsEnum, sourceProperty.IsEnum);
+        property.Enum = mergeValue(property.Enum, sourceProperty.Enum);
+
+        property.Inherited = options.isInherited;
+    }
+}
+
 const implementInterfaces = function(model, hasInterfaces, addPropertyCallback) {
     for (const implentedInterface of hasInterfaces.Interfaces) {
 
@@ -26,64 +82,76 @@ const implementInterfaces = function(model, hasInterfaces, addPropertyCallback) 
             }
         }
 
-        for (const interfaceProperty of interface.Properties) {
-            var property = hasInterfaces.Properties.find(p => p.Name == interfaceProperty.Name);
-
-            if (!property) {
-                
-                var newProperty = Object.assign({}, interfaceProperty);
-                newProperty.Inherited = true;
-
-                if (addPropertyCallback) {
-                    addPropertyCallback(newProperty);
-                }
-
-                if (newProperty.IsId) {
-                    hasInterfaces.Properties.splice(0, 0, newProperty);
-                    continue;
-                }
-
-                hasInterfaces.Properties.push(newProperty);
-                continue;
+        mergeProperties(
+            interface, 
+            hasInterfaces, 
+            { 
+                addMissingProperties: true, 
+                isInherited: true, 
+                addPropertyCallback: addPropertyCallback 
             }
+        );
+    }
+};
 
-            property.Name = mergeValue(property.Name, interfaceProperty.Name);
-            property.Description = mergeValue(property.Description, interfaceProperty.Description);
-            property.Type = mergeValue(property.Type, interfaceProperty.Type);
-            property.BaseType = mergeValue(property.BaseType, interfaceProperty.BaseType);
-            property.IsId = mergeValue(property.IsId, interfaceProperty.IsId);
-            property.IsNullable = mergeValue(property.IsNullable, interfaceProperty.IsNullable);
-            property.IsGenerated = mergeValue(property.IsGenerated, interfaceProperty.IsGenerated);
-            property.Length = mergeValue(property.Length, interfaceProperty.Length);
-            property.Precision = mergeValue(property.Precision, interfaceProperty.Precision);
-            property.Scale = mergeValue(property.Scale, interfaceProperty.Scale);
-            property.DefaultExpression = mergeValue(property.DefaultExpression, interfaceProperty.DefaultExpression);
-            property.IsEnum = mergeValue(property.IsEnum, interfaceProperty.IsEnum);
-            property.Enum = mergeValue(property.Enum, interfaceProperty.Enum);
+const setPropertyDefaults = function(model, hasProperties) 
+{
+    var defaultStringLength = 50;
+    var defaultPrecision = 18;
+    var defaultScale = 5;
 
-            property.Inherited = true;
+    if (isEmpty(model.CustomProperties))
+        model.CustomProperties = {};
+    
+    if (!isEmpty(model.CustomProperties.DefaultStringLength))
+        defaultStringLength = mergeValue(model.CustomProperties.DefaultStringLength.Value, 50);
+    
+    if (!isEmpty(model.CustomProperties.DefaultPrecision))
+        defaultPrecision = mergeValue(model.CustomProperties.DefaultPrecision.Value, 18);
+    
+    if (!isEmpty(model.CustomProperties.DefaultScale))
+        defaultScale = mergeValue(model.CustomProperties.DefaultScale.Value, 5);
+
+    for (const property of hasProperties.Properties) {
+        var type = property.BaseType || property.Type;
+
+        if (!type)
+            type = "string";
+        
+        if (type.toUpperCase() == "STRING") {
+            property.Length = mergeValue(property.Length, defaultStringLength);
+            continue;
+        }
+        
+        if (type.toUpperCase() == "DECIMAL" || type.toUpperCase() == "DOUBLE") {
+            property.Precision = mergeValue(property.Precision, defaultPrecision);
+            property.Scale = mergeValue(property.Scale, defaultScale);
+            continue;
         }
     }
 };
 
 const prepare = function(model) {
+
     for (const interface of model.Interfaces) {
+        setPropertyDefaults(model, interface);
         implementInterfaces(model, interface);
     }
 
     for (const entity of model.DomainEntities) {
-        
         implementInterfaces(model, entity);
+        setPropertyDefaults(model, entity);
 
-        for (const action of entity.Actions) {
-            implementInterfaces(model, action, function(interfaceProperty) {
-                interfaceProperty.IsRequestParameter = true;
-                interfaceProperty.IsIncludedInResponse = false;
-            });
-        }
+        for(const property of entity.Properties) {
+            if (!property.IsEnum)
+                continue;
+            
+            var enumValue = model.DomainEnums.find(e => e.Name == property.Enum.Name);
 
-        for (const view of entity.Views) {
-            implementInterfaces(model, view);
+            if (!enumValue)
+                continue;
+
+            property.EnumValue = enumValue;
         }
 
         entity.idProperty = entity.Properties.find(property => property.IsId);
@@ -94,7 +162,23 @@ const prepare = function(model) {
             });
         };
 
+        for (const action of entity.Actions) {
+            implementInterfaces(model, action, function(interfaceProperty) {
+                interfaceProperty.IsRequestParameter = true;
+                interfaceProperty.IsIncludedInResponse = false;
+            });
+            mergeProperties(entity, action);
+            setPropertyDefaults(model, action);;
+        }
+
         for (const view of entity.Views) {
+            implementInterfaces(model, view);
+            mergeProperties(entity, view);
+            setPropertyDefaults(model, view);
+        }
+
+        for (const view of entity.Views) {
+
             view.idProperty = view.Properties.find(property => property.IsId);
 
             if (view.idProperty) {
@@ -117,18 +201,6 @@ const prepare = function(model) {
                 event.eventAction = event.Action ? event.Action.replace("${dto}", event.dtoInstance) : null;
                 event.eventCondition = event.Condition ? event.Condition.replace("${dto}", event.dtoInstance) : null;
             }
-        }
-
-        for(const property of entity.Properties) {
-            if (!property.IsEnum)
-                continue;
-            
-            var enumValue = model.DomainEnums.find(e => e.Name == property.Enum.Name);
-
-            if (!enumValue)
-                continue;
-
-            property.EnumValue = enumValue;
         }
     }
 };

@@ -1,5 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -27,7 +26,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{3A08
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{D3547FCE-A7DB-4037-9695-74EEB86CDDB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "{{Namespace}}.Domain.Core", "{{Namespace}}.Domain.Core\\{{Namespace}}.Domain.Core.csproj", "{A59B03BF-09D7-42E2-B821-A722AD37BB6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "{{Namespace}}.Domain.Core", "{{Namespace}}.Domain.Core\\{{Namespace}}.Domain.Core.csproj", "{A59B03BF-09D7-42E2-B821-A722AD37BB6E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{44BF00C7-7916-4321-A003-8D334BFCA30E}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "{{Namespace}}.Database", "{{Namespace}}.Database\\{{Namespace}}.Database.sqlproj", "{1C9C523E-70E6-4D11-A658-968D624D0854}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "{{Namespace}}.Database.Migrations", "{{Namespace}}.Database.Migrations\\{{Namespace}}.Database.Migrations.csproj", "{DB303D97-88A6-40F3-AFCB-4387134C14CC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "{{Namespace}}.Database.Migrator", "{{Namespace}}.Database.Migrator\\{{Namespace}}.Database.Migrator.csproj", "{64A1F3DD-42F5-404E-9308-6B164BE6FDEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +78,20 @@ Global
 		{A59B03BF-09D7-42E2-B821-A722AD37BB6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A59B03BF-09D7-42E2-B821-A722AD37BB6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A59B03BF-09D7-42E2-B821-A722AD37BB6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C9C523E-70E6-4D11-A658-968D624D0854}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C9C523E-70E6-4D11-A658-968D624D0854}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C9C523E-70E6-4D11-A658-968D624D0854}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{1C9C523E-70E6-4D11-A658-968D624D0854}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C9C523E-70E6-4D11-A658-968D624D0854}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C9C523E-70E6-4D11-A658-968D624D0854}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{DB303D97-88A6-40F3-AFCB-4387134C14CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB303D97-88A6-40F3-AFCB-4387134C14CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB303D97-88A6-40F3-AFCB-4387134C14CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB303D97-88A6-40F3-AFCB-4387134C14CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64A1F3DD-42F5-404E-9308-6B164BE6FDEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64A1F3DD-42F5-404E-9308-6B164BE6FDEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64A1F3DD-42F5-404E-9308-6B164BE6FDEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64A1F3DD-42F5-404E-9308-6B164BE6FDEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +106,9 @@ Global
 		{D50C9061-3389-4731-ACF7-4B1228BBAC5C} = {A0826F95-80F0-4EAE-92AE-0EB2A998A7D3}
 		{ED52E7D9-E937-4EFE-ADB6-2818687761FA} = {3A08FE97-DD81-4EAA-8D7B-09584CB16F67}
 		{A59B03BF-09D7-42E2-B821-A722AD37BB6E} = {D393E85E-143E-40E6-9D39-88825552CF94}
+		{1C9C523E-70E6-4D11-A658-968D624D0854} = {44BF00C7-7916-4321-A003-8D334BFCA30E}
+		{DB303D97-88A6-40F3-AFCB-4387134C14CC} = {44BF00C7-7916-4321-A003-8D334BFCA30E}
+		{64A1F3DD-42F5-404E-9308-6B164BE6FDEE} = {44BF00C7-7916-4321-A003-8D334BFCA30E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49E24AB9-05AF-41A8-819B-408EFA3761DC}

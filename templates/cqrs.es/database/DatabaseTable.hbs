@@ -1,0 +1,12 @@
+{{#each entity.Views}}
+CREATE TABLE [dbo].[{{Name}}] ({{#each Properties}}{{#unless @first}},{{/unless}}
+    [{{Name}}] {{getSqlType .}} {{#unless IsNullable}}NOT {{/unless}}NULL{{/each}},
+    [Version] [bigint] NULL,
+    CONSTRAINT [PK_{{Name}}] PRIMARY KEY CLUSTERED 
+    ({{#each Properties}}{{#if IsId}}{{#unless @first}},{{/unless}}
+        [{{Name}}] ASC{{/if}}{{/each}}
+    )
+);
+//[{{Name}}.sql]
+//##SPLIT##
+{{/each}}

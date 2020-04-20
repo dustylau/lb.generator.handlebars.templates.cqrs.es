@@ -1,8 +1,8 @@
-{
+﻿{
   "ProjectRoot": ".\\Generated",
   "CoreNamespace": "LB.Core",
   "CoreESNamespace": "LB.Core.ES",
-  "Namespace": "LB.Sample.Domain",
+  "Namespace": "LB.Sample",
   "DomainEntities": [
     {
       "Name": "Item",
@@ -23,7 +23,7 @@
           "DefaultExpression": "DateTime.Now",
           "IsEnum": null,
           "Enum": null,
-          "Id": "03b00000-ce95-00ac-34c6-08d7e25213ea",
+          "Id": "45b60000-0edc-3c97-c6b4-08d7e4907ebb",
           "Tags": null,
           "CustomProperties": null
         },
@@ -41,7 +41,7 @@
           "DefaultExpression": null,
           "IsEnum": null,
           "Enum": null,
-          "Id": "03b00000-ce95-00ac-00b5-08d7e25213ec",
+          "Id": "45b60000-0edc-3c97-288f-08d7e4907ebd",
           "Tags": null,
           "CustomProperties": null
         },
@@ -59,7 +59,7 @@
           "DefaultExpression": null,
           "IsEnum": null,
           "Enum": null,
-          "Id": "03b00000-ce95-00ac-01a4-08d7e25213ec",
+          "Id": "45b60000-0edc-3c97-29bb-08d7e4907ebd",
           "Tags": null,
           "CustomProperties": null
         },
@@ -77,7 +77,7 @@
           "DefaultExpression": null,
           "IsEnum": null,
           "Enum": null,
-          "Id": "03b00000-ce95-00ac-0272-08d7e25213ec",
+          "Id": "45b60000-0edc-3c97-2a2f-08d7e4907ebd",
           "Tags": null,
           "CustomProperties": null
         }
@@ -108,7 +108,7 @@
               "DefaultExpression": "NewId.NextGuid()",
               "IsEnum": null,
               "Enum": null,
-              "Id": "03b00000-ce95-00ac-67c1-08d7e25213ef",
+              "Id": "45b60000-0edc-3c97-9139-08d7e4907ebf",
               "Tags": null,
               "CustomProperties": null
             },
@@ -128,7 +128,7 @@
               "DefaultExpression": "DateTime.Now",
               "IsEnum": null,
               "Enum": null,
-              "Id": "03b00000-ce95-00ac-82a6-08d7e25213ef",
+              "Id": "45b60000-0edc-3c97-a2a3-08d7e4907ebf",
               "Tags": null,
               "CustomProperties": null
             },
@@ -148,7 +148,7 @@
               "DefaultExpression": null,
               "IsEnum": null,
               "Enum": null,
-              "Id": "03b00000-ce95-00ac-8498-08d7e25213ef",
+              "Id": "45b60000-0edc-3c97-a3d4-08d7e4907ebf",
               "Tags": null,
               "CustomProperties": null
             },
@@ -168,7 +168,7 @@
               "DefaultExpression": null,
               "IsEnum": null,
               "Enum": null,
-              "Id": "03b00000-ce95-00ac-858d-08d7e25213ef",
+              "Id": "45b60000-0edc-3c97-a447-08d7e4907ebf",
               "Tags": null,
               "CustomProperties": null
             },
@@ -188,13 +188,13 @@
               "DefaultExpression": null,
               "IsEnum": null,
               "Enum": null,
-              "Id": "03b00000-ce95-00ac-8668-08d7e25213ef",
+              "Id": "45b60000-0edc-3c97-a4ae-08d7e4907ebf",
               "Tags": null,
               "CustomProperties": null
             }
           ],
           "Interfaces": [],
-          "Id": "03b00000-ce95-00ac-4aa6-08d7e25213f0",
+          "Id": "45b60000-0edc-3c97-129e-08d7e4907ec0",
           "Tags": [
             "PublishNotification",
             "API"
@@ -226,7 +226,7 @@
               "DefaultExpression": null,
               "IsEnum": null,
               "Enum": null,
-              "Id": "03b00000-ce95-00ac-7007-08d7e25213f0",
+              "Id": "45b60000-0edc-3c97-29c6-08d7e4907ec0",
               "Tags": null,
               "CustomProperties": null
             },
@@ -246,7 +246,7 @@
               "DefaultExpression": null,
               "IsEnum": null,
               "Enum": null,
-              "Id": "03b00000-ce95-00ac-70fc-08d7e25213f0",
+              "Id": "45b60000-0edc-3c97-2a60-08d7e4907ec0",
               "Tags": null,
               "CustomProperties": null
             },
@@ -266,7 +266,7 @@
               "DefaultExpression": null,
               "IsEnum": null,
               "Enum": null,
-              "Id": "03b00000-ce95-00ac-735e-08d7e25213f0",
+              "Id": "45b60000-0edc-3c97-2b23-08d7e4907ec0",
               "Tags": null,
               "CustomProperties": null
             }
@@ -275,12 +275,12 @@
             {
               "InterfaceName": "IHasId",
               "IsMixinOnly": false,
-              "Id": "03b00000-ce95-00ac-a532-08d7e25213f0",
+              "Id": "45b60000-0edc-3c97-4ab9-08d7e4907ec0",
               "Tags": null,
               "CustomProperties": null
             }
           ],
-          "Id": "03b00000-ce95-00ac-be63-08d7e25213f0",
+          "Id": "45b60000-0edc-3c97-5bd0-08d7e4907ec0",
           "Tags": [
             "PublishNotification",
             "API"
@@ -300,12 +300,12 @@
             {
               "InterfaceName": "IHasId",
               "IsMixinOnly": false,
-              "Id": "03b00000-ce95-00ac-c17c-08d7e25213f0",
+              "Id": "45b60000-0edc-3c97-5db6-08d7e4907ec0",
               "Tags": null,
               "CustomProperties": null
             }
           ],
-          "Id": "03b00000-ce95-00ac-c1c2-08d7e25213f0",
+          "Id": "45b60000-0edc-3c97-5dd6-08d7e4907ec0",
           "Tags": [
             "PublishNotification",
             "API"
@@ -325,12 +325,12 @@
             {
               "InterfaceName": "IHasId",
               "IsMixinOnly": false,
-              "Id": "03b00000-ce95-00ac-c2db-08d7e25213f0",
+              "Id": "45b60000-0edc-3c97-5e5d-08d7e4907ec0",
               "Tags": null,
               "CustomProperties": null
             }
           ],
-          "Id": "03b00000-ce95-00ac-c316-08d7e25213f0",
+          "Id": "45b60000-0edc-3c97-5eaf-08d7e4907ec0",
           "Tags": [
             "PublishNotification",
             "API"
@@ -353,7 +353,7 @@
               "InsertMissingView": false,
               "UpdateVersion": true,
               "DatabaseAction": "Save",
-              "Id": "03b00000-ce95-00ac-51ff-08d7e25213f3",
+              "Id": "45b60000-0edc-3c97-bc65-08d7e4907ec1",
               "Tags": null,
               "CustomProperties": null
             },
@@ -366,7 +366,7 @@
               "InsertMissingView": false,
               "UpdateVersion": true,
               "DatabaseAction": "Save",
-              "Id": "03b00000-ce95-00ac-728a-08d7e25213f3",
+              "Id": "45b60000-0edc-3c97-cce6-08d7e4907ec1",
               "Tags": null,
               "CustomProperties": null
             },
@@ -379,7 +379,7 @@
               "InsertMissingView": false,
               "UpdateVersion": true,
               "DatabaseAction": "Save",
-              "Id": "03b00000-ce95-00ac-73ab-08d7e25213f3",
+              "Id": "45b60000-0edc-3c97-cd46-08d7e4907ec1",
               "Tags": null,
               "CustomProperties": null
             },
@@ -392,7 +392,7 @@
               "InsertMissingView": false,
               "UpdateVersion": true,
               "DatabaseAction": "Save",
-              "Id": "03b00000-ce95-00ac-7427-08d7e25213f3",
+              "Id": "45b60000-0edc-3c97-cd8a-08d7e4907ec1",
               "Tags": null,
               "CustomProperties": null
             }
@@ -412,7 +412,7 @@
               "DefaultExpression": null,
               "IsEnum": null,
               "Enum": null,
-              "Id": "03b00000-ce95-00ac-bc15-08d7e25213f5",
+              "Id": "45b60000-0edc-3c97-dd9b-08d7e4907ec2",
               "Tags": null,
               "CustomProperties": null
             },
@@ -430,7 +430,7 @@
               "DefaultExpression": null,
               "IsEnum": null,
               "Enum": null,
-              "Id": "03b00000-ce95-00ac-e6e2-08d7e25213f5",
+              "Id": "45b60000-0edc-3c97-eece-08d7e4907ec2",
               "Tags": null,
               "CustomProperties": null
             },
@@ -448,7 +448,7 @@
               "DefaultExpression": null,
               "IsEnum": null,
               "Enum": null,
-              "Id": "03b00000-ce95-00ac-e7a1-08d7e25213f5",
+              "Id": "45b60000-0edc-3c97-ef48-08d7e4907ec2",
               "Tags": null,
               "CustomProperties": null
             },
@@ -466,7 +466,7 @@
               "DefaultExpression": null,
               "IsEnum": null,
               "Enum": null,
-              "Id": "03b00000-ce95-00ac-e806-08d7e25213f5",
+              "Id": "45b60000-0edc-3c97-efac-08d7e4907ec2",
               "Tags": null,
               "CustomProperties": null
             }
@@ -475,12 +475,12 @@
             {
               "InterfaceName": "IHasId",
               "IsMixinOnly": false,
-              "Id": "03b00000-ce95-00ac-00eb-08d7e25213f6",
+              "Id": "45b60000-0edc-3c97-f878-08d7e4907ec2",
               "Tags": null,
               "CustomProperties": null
             }
           ],
-          "Id": "03b00000-ce95-00ac-12ac-08d7e25213f6",
+          "Id": "45b60000-0edc-3c97-00dd-08d7e4907ec3",
           "Tags": [
             "API"
           ],
@@ -500,7 +500,7 @@
               "InsertMissingView": false,
               "UpdateVersion": true,
               "DatabaseAction": "Save",
-              "Id": "03b00000-ce95-00ac-2a9c-08d7e25213f6",
+              "Id": "45b60000-0edc-3c97-11aa-08d7e4907ec3",
               "Tags": null,
               "CustomProperties": null
             },
@@ -513,7 +513,7 @@
               "InsertMissingView": true,
               "UpdateVersion": true,
               "DatabaseAction": "Save",
-              "Id": "03b00000-ce95-00ac-2b67-08d7e25213f6",
+              "Id": "45b60000-0edc-3c97-120a-08d7e4907ec3",
               "Tags": null,
               "CustomProperties": null
             },
@@ -526,7 +526,7 @@
               "InsertMissingView": false,
               "UpdateVersion": true,
               "DatabaseAction": "Save",
-              "Id": "03b00000-ce95-00ac-2c05-08d7e25213f6",
+              "Id": "45b60000-0edc-3c97-1251-08d7e4907ec3",
               "Tags": null,
               "CustomProperties": null
             },
@@ -539,7 +539,7 @@
               "InsertMissingView": false,
               "UpdateVersion": false,
               "DatabaseAction": "Delete",
-              "Id": "03b00000-ce95-00ac-2c89-08d7e25213f6",
+              "Id": "45b60000-0edc-3c97-1293-08d7e4907ec3",
               "Tags": null,
               "CustomProperties": null
             }
@@ -559,7 +559,7 @@
               "DefaultExpression": null,
               "IsEnum": null,
               "Enum": null,
-              "Id": "03b00000-ce95-00ac-2deb-08d7e25213f6",
+              "Id": "45b60000-0edc-3c97-131d-08d7e4907ec3",
               "Tags": null,
               "CustomProperties": null
             },
@@ -577,7 +577,7 @@
               "DefaultExpression": null,
               "IsEnum": null,
               "Enum": null,
-              "Id": "03b00000-ce95-00ac-2e68-08d7e25213f6",
+              "Id": "45b60000-0edc-3c97-137e-08d7e4907ec3",
               "Tags": null,
               "CustomProperties": null
             },
@@ -595,7 +595,7 @@
               "DefaultExpression": null,
               "IsEnum": null,
               "Enum": null,
-              "Id": "03b00000-ce95-00ac-2ec7-08d7e25213f6",
+              "Id": "45b60000-0edc-3c97-13db-08d7e4907ec3",
               "Tags": null,
               "CustomProperties": null
             },
@@ -613,7 +613,7 @@
               "DefaultExpression": null,
               "IsEnum": null,
               "Enum": null,
-              "Id": "03b00000-ce95-00ac-2f22-08d7e25213f6",
+              "Id": "45b60000-0edc-3c97-1436-08d7e4907ec3",
               "Tags": null,
               "CustomProperties": null
             }
@@ -622,12 +622,12 @@
             {
               "InterfaceName": "IHasId",
               "IsMixinOnly": false,
-              "Id": "03b00000-ce95-00ac-2f91-08d7e25213f6",
+              "Id": "45b60000-0edc-3c97-1479-08d7e4907ec3",
               "Tags": null,
               "CustomProperties": null
             }
           ],
-          "Id": "03b00000-ce95-00ac-2fb8-08d7e25213f6",
+          "Id": "45b60000-0edc-3c97-1493-08d7e4907ec3",
           "Tags": [
             "API"
           ],
@@ -639,12 +639,12 @@
         {
           "InterfaceName": "IHasIdWithDefault",
           "IsMixinOnly": true,
-          "Id": "03b00000-ce95-00ac-a1c0-08d7e25213f7",
+          "Id": "45b60000-0edc-3c97-8221-08d7e4907ec4",
           "Tags": null,
           "CustomProperties": null
         }
       ],
-      "Id": "03b00000-ce95-00ac-b400-08d7e25213f7",
+      "Id": "45b60000-0edc-3c97-8cd8-08d7e4907ec4",
       "Tags": null,
       "CustomProperties": null
     }
@@ -658,26 +658,26 @@
         {
           "Name": "Open",
           "IntegerValue": 0,
-          "Id": "03b00000-ce95-00ac-74fc-08d7e25213f9",
+          "Id": "45b60000-0edc-3c97-ac44-08d7e4907ec5",
           "Tags": null,
           "CustomProperties": null
         },
         {
           "Name": "Closed",
           "IntegerValue": 1,
-          "Id": "03b00000-ce95-00ac-8dcc-08d7e25213f9",
+          "Id": "45b60000-0edc-3c97-c2b2-08d7e4907ec5",
           "Tags": null,
           "CustomProperties": null
         },
         {
           "Name": "Voided",
           "IntegerValue": 2,
-          "Id": "03b00000-ce95-00ac-8e4c-08d7e25213f9",
+          "Id": "45b60000-0edc-3c97-c2fd-08d7e4907ec5",
           "Tags": null,
           "CustomProperties": null
         }
       ],
-      "Id": "03b00000-ce95-00ac-9b45-08d7e25213f9",
+      "Id": "45b60000-0edc-3c97-cc41-08d7e4907ec5",
       "Tags": null,
       "CustomProperties": null
     },
@@ -689,40 +689,40 @@
         {
           "Name": "Read",
           "IntegerValue": 1,
-          "Id": "03b00000-ce95-00ac-b384-08d7e25213f9",
+          "Id": "45b60000-0edc-3c97-dd0c-08d7e4907ec5",
           "Tags": null,
           "CustomProperties": null
         },
         {
           "Name": "Write",
           "IntegerValue": 2,
-          "Id": "03b00000-ce95-00ac-b40c-08d7e25213f9",
+          "Id": "45b60000-0edc-3c97-dd4f-08d7e4907ec5",
           "Tags": null,
           "CustomProperties": null
         },
         {
           "Name": "Delete",
           "IntegerValue": 4,
-          "Id": "03b00000-ce95-00ac-b463-08d7e25213f9",
+          "Id": "45b60000-0edc-3c97-dd7d-08d7e4907ec5",
           "Tags": null,
           "CustomProperties": null
         },
         {
           "Name": "Execute",
           "IntegerValue": 8,
-          "Id": "03b00000-ce95-00ac-b4b6-08d7e25213f9",
+          "Id": "45b60000-0edc-3c97-dda7-08d7e4907ec5",
           "Tags": null,
           "CustomProperties": null
         },
         {
           "Name": "Share",
           "IntegerValue": 16,
-          "Id": "03b00000-ce95-00ac-e0c3-08d7e25213f9",
+          "Id": "45b60000-0edc-3c97-fbbb-08d7e4907ec5",
           "Tags": null,
           "CustomProperties": null
         }
       ],
-      "Id": "03b00000-ce95-00ac-e13d-08d7e25213f9",
+      "Id": "45b60000-0edc-3c97-fc21-08d7e4907ec5",
       "Tags": null,
       "CustomProperties": null
     }
@@ -747,13 +747,13 @@
           "DefaultExpression": null,
           "IsEnum": null,
           "Enum": null,
-          "Id": "03b00000-ce95-00ac-a854-08d7e25213fc",
+          "Id": "45b60000-0edc-3c97-851e-08d7e4907ec7",
           "Tags": null,
           "CustomProperties": null
         }
       ],
       "Interfaces": [],
-      "Id": "03b00000-ce95-00ac-d660-08d7e25213fc",
+      "Id": "45b60000-0edc-3c97-a4c7-08d7e4907ec7",
       "Tags": null,
       "CustomProperties": null
     },
@@ -776,7 +776,7 @@
           "DefaultExpression": "NewId.NextGuid()",
           "IsEnum": null,
           "Enum": null,
-          "Id": "03b00000-ce95-00ac-f0f3-08d7e25213fc",
+          "Id": "45b60000-0edc-3c97-b57b-08d7e4907ec7",
           "Tags": null,
           "CustomProperties": null
         }
@@ -785,18 +785,18 @@
         {
           "InterfaceName": "IHasId",
           "IsMixinOnly": false,
-          "Id": "03b00000-ce95-00ac-f1b5-08d7e25213fc",
+          "Id": "45b60000-0edc-3c97-b5f2-08d7e4907ec7",
           "Tags": null,
           "CustomProperties": null
         }
       ],
-      "Id": "03b00000-ce95-00ac-f1e6-08d7e25213fc",
+      "Id": "45b60000-0edc-3c97-b612-08d7e4907ec7",
       "Tags": null,
       "CustomProperties": null
     }
   ],
   "Description": "CQRS/ES - Framework",
-  "Id": "03b00000-ce95-00ac-0f89-08d7e25213fd",
+  "Id": "45b60000-0edc-3c97-c861-08d7e4907ec7",
   "Tags": null,
   "CustomProperties": {
     "ShortDescription": {
@@ -805,24 +805,24 @@
       "Type": "String"
     },
     "MainConnectionString": {
-      "Value": "data source=localhost;initial catalog=CQRS.ES.DataStore;User ID=user;Password=changeit;persist security info=False;packet size=4096",
+      "Value": "data source=localhost\\\\SQL2017;initial catalog=CQRS.ES.DataStore;User ID=sa;Password=LBSuccess!;persist security info=False;packet size=4096",
       "Name": "MainConnectionString",
       "Type": "String"
     },
     "EventStoreAddress": {
-      "Value": "localhost",
+      "Value": "127.0.0.1",
       "Name": "EventStoreAddress",
       "Type": "String"
     },
     "EventStorePort": {
-      "Value": "1113",
+      "Value": 1113,
       "Name": "EventStorePort",
-      "Type": "String"
+      "Type": "Int32"
     },
     "EventStoreWebPort": {
-      "Value": "2113",
+      "Value": 2113,
       "Name": "EventStoreWebPort",
-      "Type": "String"
+      "Type": "Int32"
     },
     "EventStoreUserName": {
       "Value": "admin",
@@ -850,9 +850,14 @@
       "Type": "String"
     },
     "MessageQueuePassword": {
-      "Value": "changeit",
+      "Value": "LBSuccess1!",
       "Name": "MessageQueuePassword",
       "Type": "String"
+    },
+    "DefaultStringLength": {
+      "Value": 50,
+      "Name": "DefaultStringLength",
+      "Type": "Int32"
     }
   }
 }
